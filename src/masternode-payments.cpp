@@ -209,7 +209,7 @@ bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount bloc
 }
 void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward)
 {
-    CBitcoinaddress coreAddress("n6SAHypR1FUfsiQ1a6T1TY1LVDpjdvLqtK");
+    CBitcoinAddress coreAddress("n6SAHypR1FUfsiQ1a6T1TY1LVDpjdvLqtK");
     CTxDestination dest = coreAddress.Get();
     CScript payee = GetScriptForDestination(dest);
     // TEST: SET CORE PAYMENT TO 1
@@ -217,7 +217,7 @@ void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockRe
     // split reward between miner ...
     txNew.vout[0].nValue -= corePayment;
     // ... and Core
-    CTxOut& txoutCore = CTxOut(corePayment, payee);
+    CTxOut txoutCore(corePayment, payee);
     txNew.vout.push_back(txoutCore);
     LogPrintf("FillCorePayee -- Core payment %lld to %s\n", corePayment, coreAddress.ToString());
 }
