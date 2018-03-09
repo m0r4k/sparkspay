@@ -213,7 +213,7 @@ void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockRe
     CTxDestination dest = coreAddress.Get();
     CScript payee = GetScriptForDestination(dest);
     // TEST: SET CORE PAYMENT TO 1
-    CAmount corePayment = 1;
+    CAmount corePayment = 1 * COIN;
     // split reward between miner ...
     txNew.vout[0].nValue -= corePayment;
     // ... and Core
