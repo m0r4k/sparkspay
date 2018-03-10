@@ -36,7 +36,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 
     // set reference point, paddings
     int paddingLeft             = 14;
-    int paddingTop              = 460;
+    int paddingTop              = 600;
     int titleVersionVSpace      = 17;
     int titleCopyrightVSpace    = 32;
 
@@ -62,7 +62,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     pixmap = QPixmap(splashScreenPath);
 
     QPainter pixPaint(&pixmap);
-    pixPaint.setPen(QColor(100,100,100));
+    pixPaint.setPen(QColor(238,238,238));
 
     // check font size and drawing with
     pixPaint.setFont(QFont(font, 28*fontFactor));
