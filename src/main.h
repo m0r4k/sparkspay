@@ -253,8 +253,10 @@ bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams,
 
 double ConvertBitsToDouble(unsigned int nBits);
 CAmount GetBlockSubsidy(int nBits, int nHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly = false);
+CAmount GetLegacySubsidy(int nPrevHeight);
+CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusParams);
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue);
-
+CAmount GetCorePayment(int nHeight, CAmount blockValue);
 /**
  * Prune block and undo files (blk???.dat and undo???.dat) so that the disk space used is less than a user-defined target.
  * The user sets the target (in MB) on the command line or in config file.  This will be run on startup and whenever new
@@ -867,5 +869,13 @@ static const unsigned int REJECT_CONFLICT = 0x102;
 static const std::string bannedAddresses[] = {
     "GRFBCEuMcfi9PhFVfcVutL7bGwj4KdPyWX"
 };
-
+static const unsigned int BLOCK_REWARD_PREMINE = 650000;
+static const unsigned int BLOCK_REWARD_LEGACY = 18;
+static const unsigned int BLOCK_REWARD_REBORN = 20;
+static const unsigned int BLOCK_REWARD_POSTMINE = 300000;
+//static const int BLOCK_HEIGHT_REBORN = 72000;
+//static const int BLOCKS_PER_MONTH = 21600;
+//DEBUG
+static const int BLOCK_HEIGHT_REBORN = 100;
+static const int BLOCKS_PER_MONTH = 1;
 #endif // BITCOIN_MAIN_H

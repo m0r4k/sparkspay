@@ -1741,23 +1741,95 @@ NOTE:   unlike bitcoin we are using PREVIOUS block height here,
 */
 CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
-    if (nPrevHeight == 0) {
-        return 650000 * COIN;
+    CAmount nSubsidy = 0;
+    if(nPrevHeight < BLOCK_HEIGHT_REBORN) {
+        nSubsidy = GetLegacySubsidy(nPrevHeight);
     }
-
-    CAmount nSubsidy = 18 * COIN;
-
-    // yearly decline of production by 12% per year, projected 136m coins max by year 2050+.
-    for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
-        nSubsidy -= nSubsidy/12;
+    else {
+        nSubsidy = GetRebornSubsidy(nPrevHeight, consensusParams);
     }
 
     return fSuperblockPartOnly ? 0 : nSubsidy;
 }
 
+CAmount GetLegacySubsidy(int nPrevHeight)
+{
+    CAmount nSubsidy = 0;
+    if (nPrevHeight == 0) {
+        nSubsidy = BLOCK_REWARD_PREMINE * COIN;
+    }
+    else {
+        nSubsidy = BLOCK_REWARD_LEGACY * COIN;
+    }
+    return nSubsidy;
+}
+
+CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusParams)
+{
+    CAmount nSubsidy = 0;
+    switch(nPrevHeight)
+    {
+        case BLOCK_HEIGHT_REBORN:
+            nSubsidy = BLOCK_REWARD_REBORN + BLOCK_REWARD_POSTMINE;
+            break;
+        case BLOCK_HEIGHT_REBORN + BLOCKS_PER_MONTH:
+        case BLOCK_HEIGHT_REBORN + 2 * BLOCKS_PER_MONTH:
+        case BLOCK_HEIGHT_REBORN + 3 * BLOCKS_PER_MONTH:
+            nSubsidy = 1000;
+            break;
+        case BLOCK_HEIGHT_REBORN + 4 * BLOCKS_PER_MONTH:
+        case BLOCK_HEIGHT_REBORN + 5 * BLOCKS_PER_MONTH:
+        case BLOCK_HEIGHT_REBORN + 6 * BLOCKS_PER_MONTH:
+            nSubsidy = 1500;
+            break;
+        case BLOCK_HEIGHT_REBORN + 7 * BLOCKS_PER_MONTH:
+        case BLOCK_HEIGHT_REBORN + 8 * BLOCKS_PER_MONTH:
+        case BLOCK_HEIGHT_REBORN + 9 * BLOCKS_PER_MONTH:
+            nSubsidy = 2000;
+            break;
+        case BLOCK_HEIGHT_REBORN + 10 * BLOCKS_PER_MONTH:
+        case BLOCK_HEIGHT_REBORN + 11 * BLOCKS_PER_MONTH:
+        case BLOCK_HEIGHT_REBORN + 12 * BLOCKS_PER_MONTH:
+            nSubsidy = 2500;
+            break;
+        case BLOCK_HEIGHT_REBORN + 24 * BLOCKS_PER_MONTH:
+            nSubsidy = 3500;
+            break;
+        case BLOCK_HEIGHT_REBORN + 36 * BLOCKS_PER_MONTH:
+            nSubsidy = 5500;
+            break;
+        case BLOCK_HEIGHT_REBORN + 48 * BLOCKS_PER_MONTH:
+            nSubsidy = 9000;
+            break;
+        case BLOCK_HEIGHT_REBORN + 60 * BLOCKS_PER_MONTH:
+            nSubsidy = 15000;
+            break;
+        default:
+            nSubsidy = BLOCK_REWARD_REBORN;
+            // yearly decline of production by 12% per year, projected 136m coins max by year 2050+.
+            for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
+                nSubsidy -= nSubsidy/12;
+            }
+            break;
+    }
+    return nSubsidy;
+}
+
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
-    return blockValue/2;
+    CAmount masterNodePayment = blockValue - GetCorePayment(nHeight, blockValue);
+    return masterNodePayment / 2;
+}
+
+CAmount GetCorePayment(int nHeight, CAmount blockValue)
+{
+    if(nHeight < BLOCK_HEIGHT_REBORN) {
+        return 0;
+    }else if(nHeight == BLOCK_HEIGHT_REBORN) {
+        return BLOCK_REWARD_POSTMINE;
+    } else {
+        return blockValue * 0.1;
+    }
 }
 
 bool IsInitialBlockDownload()
