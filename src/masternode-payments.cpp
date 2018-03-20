@@ -212,7 +212,7 @@ void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockRe
     CAmount corePayment = GetCorePayment(nBlockHeight, blockReward);
     if(corePayment > 0)
     {
-        CBitcoinAddress coreAddress("n6SAHypR1FUfsiQ1a6T1TY1LVDpjdvLqtK");
+        CBitcoinAddress coreAddress("nQvKgzJwYBtofzarkRFTAZS3TddbrGwXVW");
         CTxDestination dest = coreAddress.Get();
         CScript payee = GetScriptForDestination(dest);
         // split reward between miner ...
