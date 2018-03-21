@@ -1770,42 +1770,42 @@ CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusPara
     switch(nPrevHeight)
     {
         case BLOCK_HEIGHT_REBORN:
-            nSubsidy = BLOCK_REWARD_REBORN + BLOCK_REWARD_POSTMINE;
+            nSubsidy = (BLOCK_REWARD_REBORN + BLOCK_REWARD_POSTMINE) * COIN;
             break;
         case BLOCK_HEIGHT_REBORN + BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 2 * BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 3 * BLOCKS_PER_MONTH:
-            nSubsidy = 1000;
+            nSubsidy = 1000 * COIN;
             break;
         case BLOCK_HEIGHT_REBORN + 4 * BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 5 * BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 6 * BLOCKS_PER_MONTH:
-            nSubsidy = 1500;
+            nSubsidy = 1500 * COIN;
             break;
         case BLOCK_HEIGHT_REBORN + 7 * BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 8 * BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 9 * BLOCKS_PER_MONTH:
-            nSubsidy = 2000;
+            nSubsidy = 2000 * COIN;
             break;
         case BLOCK_HEIGHT_REBORN + 10 * BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 11 * BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 12 * BLOCKS_PER_MONTH:
-            nSubsidy = 2500;
+            nSubsidy = 2500 * COIN;
             break;
         case BLOCK_HEIGHT_REBORN + 24 * BLOCKS_PER_MONTH:
-            nSubsidy = 3500;
+            nSubsidy = 3500 * COIN;
             break;
         case BLOCK_HEIGHT_REBORN + 36 * BLOCKS_PER_MONTH:
-            nSubsidy = 5500;
+            nSubsidy = 5500 * COIN;
             break;
         case BLOCK_HEIGHT_REBORN + 48 * BLOCKS_PER_MONTH:
-            nSubsidy = 9000;
+            nSubsidy = 9000 * COIN;
             break;
         case BLOCK_HEIGHT_REBORN + 60 * BLOCKS_PER_MONTH:
-            nSubsidy = 15000;
+            nSubsidy = 15000 * COIN;
             break;
         default:
-            nSubsidy = BLOCK_REWARD_REBORN;
+            nSubsidy = BLOCK_REWARD_REBORN * COIN;
             // yearly decline of production by 12% per year, projected 136m coins max by year 2050+.
             for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
                 nSubsidy -= nSubsidy/12;
@@ -1826,7 +1826,7 @@ CAmount GetCorePayment(int nHeight, CAmount blockValue)
     if(nHeight < BLOCK_HEIGHT_REBORN) {
         return 0;
     }else if(nHeight == BLOCK_HEIGHT_REBORN) {
-        return BLOCK_REWARD_POSTMINE;
+        return BLOCK_REWARD_POSTMINE * COIN;
     } else {
         return blockValue * 0.1;
     }
