@@ -280,6 +280,9 @@ bool CMasternodePayments::CanVote(COutPoint outMasternode, int nBlockHeight)
 
 void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet)
 {
+    // ... and Core
+    FillCorePayee(txNew, nBlockHeight, blockReward);
+
     // make sure it's not filled yet
     txoutMasternodeRet = CTxOut();
 
@@ -306,9 +309,6 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
     // ... masternode ...
     txoutMasternodeRet = CTxOut(masternodePayment, payee);
     txNew.vout.push_back(txoutMasternodeRet);
-
-    // ... and Core
-    FillCorePayee(txNew, nBlockHeight, blockReward);
 
     CTxDestination address1;
     ExtractDestination(payee, address1);
