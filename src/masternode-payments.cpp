@@ -220,7 +220,7 @@ void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockRe
         // ... and Core
         CTxOut txoutCore(corePayment, payee);
         txNew.vout.push_back(txoutCore);
-        LogPrintf("FillCorePayee -- Core payment %lld to %s\n", corePayment, coreAddress.ToString());
+        LogPrintf("FillCorePayee -- Core payment %lld to %s for block %d reward %lld\n", corePayment, coreAddress.ToString(), nBlockHeight, blockReward);
     }
 }
 
@@ -237,6 +237,8 @@ void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blo
 
     // FILL BLOCK PAYEE WITH MASTERNODE PAYMENT OTHERWISE
     mnpayments.FillBlockPayee(txNew, nBlockHeight, blockReward, txoutMasternodeRet);
+    LogPrintf("FillBlockPayments -- nBlockHeight %d blockReward %lld txoutMasternodeRet %s txNew %s",
+                            nBlockHeight, blockReward, txoutMasternodeRet.ToString(), txNew.ToString());
     LogPrint("mnpayments", "FillBlockPayments -- nBlockHeight %d blockReward %lld txoutMasternodeRet %s txNew %s",
                             nBlockHeight, blockReward, txoutMasternodeRet.ToString(), txNew.ToString());
 }
@@ -314,7 +316,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
     ExtractDestination(payee, address1);
     CBitcoinAddress address2(address1);
 
-    LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode payment %lld to %s\n", masternodePayment, address2.ToString());
+    LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode payment %lld to %s for block %d reward %lld \n", masternodePayment, address2.ToString(), nBlockHeight, blockReward);
 }
 
 int CMasternodePayments::GetMinMasternodePaymentsProto() {
