@@ -1748,7 +1748,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     else {
         nSubsidy = GetRebornSubsidy(nPrevHeight, consensusParams);
     }
-
+    LogPrintf("GetBlockSubsidy -- Reward for prevblock %d is %lld\n", nPrevHeight, nSubsidy);
     return fSuperblockPartOnly ? 0 : nSubsidy;
 }
 
