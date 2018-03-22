@@ -1823,9 +1823,9 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 
 CAmount GetCorePayment(int nHeight, CAmount blockValue)
 {
-    if(nHeight < BLOCK_HEIGHT_REBORN) {
+    if(nHeight <= BLOCK_HEIGHT_REBORN) {
         return 0;
-    }else if(nHeight == BLOCK_HEIGHT_REBORN) {
+    }else if(nHeight == BLOCK_HEIGHT_REBORN + 1) {
         return BLOCK_REWARD_POSTMINE * COIN;
     } else {
         return blockValue * 0.1;
