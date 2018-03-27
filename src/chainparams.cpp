@@ -228,7 +228,9 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("seed.sparks.gold",  "10.101.206.58"));
+        vSeeds.push_back(CDNSSeedData("seed1.sparkspay.io",  "seed1.sparkspay.io"));
+        vSeeds.push_back(CDNSSeedData("seed2.sparkspay.io",  "seed2.sparkspay.io"));
+        vSeeds.push_back(CDNSSeedData("seed3.sparkspay.io",  "seed3.sparkspay.io"));
         
         // Testnet Sparks addresses start with 'n'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,112);
