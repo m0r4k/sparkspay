@@ -63,6 +63,7 @@
 			"xutility": "cpp",
 			"array": "cpp",
 			"slist": "cpp"
-		}
+		},
+		"git.ignoreLimitWarning": true
 	}
 }
