@@ -2131,7 +2131,7 @@ bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoins
             if (!MoneyRange(coins->vout[prevout.n].nValue) || !MoneyRange(nValueIn))
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-inputvalues-outofrange");
             // Check for banned inputs
-            if (IsInputBanned(tx.vin[i], inputs))
+            if (nSpendHeight >= BLOCK_HEIGHT_REBORN && IsInputBanned(tx.vin[i], inputs))
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-in-banned");
         }
 
