@@ -118,8 +118,10 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x00000a5c6ddfaac5097218560d5b92d416931cfeba1abf10c81d1d6a232fc8ea"));
         assert(genesis.hashMerkleRoot == uint256S("0x1b3952bab9df804c6f02372bb62df20fa2927030a4e80389ec14c1d86fc921e4"));
 
-        vSeeds.push_back(CDNSSeedData("seed.sparks.gold", "seed.sparks.gold"));
-	vSeeds.push_back(CDNSSeedData("explorer.sparks.gold", "explorer.sparks.gold"));
+        vSeeds.push_back(CDNSSeedData("seed1.sparkspay.io", "seed1.sparkspay.io"));
+	    vSeeds.push_back(CDNSSeedData("seed2.sparkspay.io", "seed2.sparkspay.io"));
+	    vSeeds.push_back(CDNSSeedData("seed3.sparkspay.io", "seed3.sparkspay.io"));
+	    vSeeds.push_back(CDNSSeedData("seed4.sparkspay.io", "seed4.sparkspay.io"));
 
         // Sparks addresses start with 'G'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,38);
@@ -149,19 +151,27 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (    0, uint256S("0x00000a5c6ddfaac5097218560d5b92d416931cfeba1abf10c81d1d6a232fc8ea"))
-	    (	500, uint256S("0x00000004895911edc563a815f75563032bd17ef5322d0e37d58bff7f84c17274"))
-	    (	1000, uint256S("0x00000000020ff055aa61a4d11d1d66730d7e0534dc8570dc2d40c45b675b2582"))
-	( 5000, uint256S("0x0000000000463bee3178a7539e04f4ec9d1df1608d8e2e8f4bc759c6cb866abb"))
-	( 10000, uint256S("0x00000000000d9619d89073835b04dcfcb5f5188a0454daace5d9498953b277be"))
-	( 15000, uint256S("0x0000000000336fe7dd80c9a785df28d2b5154551f5345539d62917cf9eb46c79"))
-	( 20000, uint256S("0x00000000002d4f69f6e21101069e9ff65ca716380b2421147a505517d18d9bb4"))
-	( 25000, uint256S("0x00000000009d92c292b41b83a213eeed3efa78c1e5b3fd205bec2d5d1483158f"))
-	( 30000, uint256S("0x000000000005fbe7c003a4526e23ba4fe285f24e4f0b9931d75002871c3d87390"))
-	( 35000, uint256S("0x00000000013480d93276ba86c9c5b7f7437fdf9ac433fc5bf52d0f59a3eea416"))
-	( 40000, uint256S("0x00000000027275c13c78980d495b6f943bf15c1617e3b2b9e331e2ab7dd6f2ea"))
-	( 45000, uint256S("0x00000000017efb152de0225848c1e2b8e03116252e0b96a56d6330467f1412d8")),
-	1519595475, // * UNIX timestamp of last checkpoint block
+            (      0, uint256S("0x00000a5c6ddfaac5097218560d5b92d416931cfeba1abf10c81d1d6a232fc8ea"))
+	        (	 500, uint256S("0x00000004895911edc563a815f75563032bd17ef5322d0e37d58bff7f84c17274"))
+	        (	1000, uint256S("0x00000000020ff055aa61a4d11d1d66730d7e0534dc8570dc2d40c45b675b2582"))
+	        (   5000, uint256S("0x0000000000463bee3178a7539e04f4ec9d1df1608d8e2e8f4bc759c6cb866abb"))
+	        (  10000, uint256S("0x00000000000d9619d89073835b04dcfcb5f5188a0454daace5d9498953b277be"))
+	        (  15000, uint256S("0x0000000000336fe7dd80c9a785df28d2b5154551f5345539d62917cf9eb46c79"))
+	        (  20000, uint256S("0x00000000002d4f69f6e21101069e9ff65ca716380b2421147a505517d18d9bb4"))
+	        (  25000, uint256S("0x00000000009d92c292b41b83a213eeed3efa78c1e5b3fd205bec2d5d1483158f"))
+	        (  30000, uint256S("0x000000000005fbe7c003a4526e23ba4fe285f24e4f0b9931d75002871c3d87390"))
+	        (  35000, uint256S("0x00000000013480d93276ba86c9c5b7f7437fdf9ac433fc5bf52d0f59a3eea416"))
+	        (  40000, uint256S("0x00000000027275c13c78980d495b6f943bf15c1617e3b2b9e331e2ab7dd6f2ea"))
+	        (  45000, uint256S("0x00000000017efb152de0225848c1e2b8e03116252e0b96a56d6330467f1412d8"))
+	        (  50000, uint256S("0x0000000010f1cfdac6446f431337e3874e6b91ada402e4fe9361778f1a684572"))
+	        (  55000, uint256S("0x0000000015fc57032197d2a200fcd878e76e1c740594d7a175a89a92a9d70e95"))
+	        (  60000, uint256S("0x000000000044e8311956b7e00cda12c2fd3df21465a6411bea3a6f3de6aaf1ba"))
+	        (  65000, uint256S("0x000000000612aff5784a8b8beba682f32610c0907fdd05061ccdd006bd331fc2"))
+	        (  70000, uint256S("0x000000001a835ae450f5fc24dcfbb9a73727eb360055db2e6f004875e9e283ac"))
+	        (  75000, uint256S("0x000000000f7699c372bc333ccfe77e6e4c1dba455534f1683f87afa77f718662"))
+	        (  80000, uint256S("0x00000000382cac8c592da673d1cb3eece9747a725dc8d40420ec8c54d70353ca")),
+	        (  85000, uint256S("0x00000000172eb33e1d197a00cc470dc823c64ff35ad9d28446858084fcf7acb2")),
+	        1524778707, // * UNIX timestamp of last checkpoint block
             72360,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2800        // * estimated number of transactions per day after checkpoint
@@ -228,9 +238,8 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("seed1.sparkspay.io",  "seed1.sparkspay.io"));
-        vSeeds.push_back(CDNSSeedData("seed2.sparkspay.io",  "seed2.sparkspay.io"));
-        vSeeds.push_back(CDNSSeedData("seed3.sparkspay.io",  "seed3.sparkspay.io"));
+        vSeeds.push_back(CDNSSeedData("test1.sparkspay.io",  "test1.sparkspay.io"));
+        vSeeds.push_back(CDNSSeedData("test2.sparkspay.io",  "test2.sparkspay.io"));
         
         // Testnet Sparks addresses start with 'n'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,112);
