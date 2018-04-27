@@ -873,9 +873,9 @@ static const unsigned int BLOCK_REWARD_PREMINE = 650000;
 static const unsigned int BLOCK_REWARD_LEGACY = 18;
 static const unsigned int BLOCK_REWARD_REBORN = 20;
 static const unsigned int BLOCK_REWARD_POSTMINE = 300000;
-//static const int BLOCK_HEIGHT_REBORN = 72000;
-//static const int BLOCKS_PER_MONTH = 21600;
+static const int BLOCK_HEIGHT_REBORN = 100000;
+static const int BLOCKS_PER_MONTH = 21600;
 //DEBUG
-static const int BLOCK_HEIGHT_REBORN = 100;
-static const int BLOCKS_PER_MONTH = 1;
+//static const int BLOCK_HEIGHT_REBORN = 100;
+//static const int BLOCKS_PER_MONTH = 1;
 #endif // BITCOIN_MAIN_H
