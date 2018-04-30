@@ -31,11 +31,11 @@ enum
 /** Fork IDs **/
 enum
 {
-    FORKID_SPK = 0,
-    FORKID_BTG = 79, // Atomic number AU
+    FORKID_BCC = 0,
+    FORKID_SPK = 79, // Atomic number
 };
 
-static const int FORKID_IN_USE = FORKID_BTG;
+static const int FORKID_IN_USE = FORKID_SPK;
 
 /** Script verification flags */
 enum
@@ -96,6 +96,10 @@ enum
     //
     // See BIP112 for details
     SCRIPT_VERIFY_CHECKSEQUENCEVERIFY = (1U << 10),
+
+    // Allow NON_FORKID in legacy tests and blocks under SPK hard fork height
+    //
+    SCRIPT_ALLOW_NON_FORKID = (1U << 17),
 };
 
 bool CheckSignatureEncoding(const std::vector<unsigned char> &vchSig, unsigned int flags, ScriptError* serror);
