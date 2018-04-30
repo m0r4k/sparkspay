@@ -135,6 +135,7 @@ BOOST_AUTO_TEST_CASE(sighash_test)
     #endif
     for (int i=0; i<nRandomTests; i++) {
         int nHashType = insecure_rand();
+        nHashType &= ~SIGHASH_FORKID;        
         CMutableTransaction txTo;
         RandomTransaction(txTo, (nHashType & 0x1f) == SIGHASH_SINGLE);
         CScript scriptCode;
@@ -142,6 +143,10 @@ BOOST_AUTO_TEST_CASE(sighash_test)
         int nIn = insecure_rand() % txTo.vin.size();
 
         uint256 sh, sho;
+
+        if (nHashType & SIGHASH_FORKID)
++            continue;
+
         sho = SignatureHashOld(scriptCode, txTo, nIn, nHashType);
         sh = SignatureHash(scriptCode, txTo, nIn, nHashType);
         #if defined(PRINT_SIGHASH_JSON)

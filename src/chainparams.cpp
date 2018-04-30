@@ -99,6 +99,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1502280000; // Aug 9th, 2017
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1533816000; // Aug 9th, 2018
 
+        //Sparks stuff
+        consensus.nSPKHeight = 100000;
+        consensus.nSPKPremine = 650000;
+        consensus.nSPKPostmine = 300000;
+        consensus.nSPKSubsidyLegacy = 18;
+        consensus.nSPKSubidyReborn = 20;
+        consensus.nSPKBlocksPerMonth = 21600;
+
         /**
          * The message start string is designed to be unlikely to occur in normal data.
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
@@ -222,6 +230,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1502280000; // Aug 9th, 2017
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1533816000; // Aug 9th, 2018
 
+        //Sparks stuff
+        consensus.nSPKHeight = 100;
+        consensus.nSPKPremine = 650000;
+        consensus.nSPKPostmine = 300000;
+        consensus.nSPKSubsidyLegacy = 18;
+        consensus.nSPKSubidyReborn = 20;
+        consensus.nSPKBlocksPerMonth = 1;
+
         pchMessageStart[0] = 0xd1;
         pchMessageStart[1] = 0x2b;
         pchMessageStart[2] = 0xb3;
@@ -319,6 +335,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 999999999999ULL;
+
+        //Sparks stuff
+        consensus.nSPKHeight = 100;
+        consensus.nSPKPremine = 650000;
+        consensus.nSPKPostmine = 300000;
+        consensus.nSPKSubsidyLegacy = 18;
+        consensus.nSPKSubidyReborn = 20;
+        consensus.nSPKBlocksPerMonth = 1;
 
         pchMessageStart[0] = 0xa1;
         pchMessageStart[1] = 0xb3;

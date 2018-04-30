@@ -80,8 +80,8 @@ BOOST_AUTO_TEST_CASE(rpc_rawparams)
     BOOST_CHECK_THROW(CallRPC("signrawtransaction null"), runtime_error);
     BOOST_CHECK_THROW(CallRPC("signrawtransaction ff00"), runtime_error);
     BOOST_CHECK_NO_THROW(CallRPC(string("signrawtransaction ")+rawtx));
-    BOOST_CHECK_NO_THROW(CallRPC(string("signrawtransaction ")+rawtx+" null null NONE|ANYONECANPAY"));
-    BOOST_CHECK_NO_THROW(CallRPC(string("signrawtransaction ")+rawtx+" [] [] NONE|ANYONECANPAY"));
+    BOOST_CHECK_NO_THROW(CallRPC(string("signrawtransaction ")+rawtx+" null null NONE|FORKID|ANYONECANPAY"));
+    BOOST_CHECK_NO_THROW(CallRPC(string("signrawtransaction ")+rawtx+" [] [] NONE|FORKID|ANYONECANPAY"));
     BOOST_CHECK_THROW(CallRPC(string("signrawtransaction ")+rawtx+" null null badenum"), runtime_error);
 
     // Only check failure cases for sendrawtransaction, there's no network to send to...

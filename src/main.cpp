@@ -1062,6 +1062,22 @@ std::string FormatStateMessage(const CValidationState &state)
         state.GetRejectCode());
 }
 
+bool static IsSPKHardForkEnabled(const CChainParams& chainParams, int nHeight) {
+    return nHeight >= chainParams.GetConsensus().SPKHeight;
+}
+
+bool IsSPKHardForkEnabled(const CChainParams& chainParams, const CBlockIndex *pindexPrev) {
+    if (pindexPrev == nullptr) {
+        return false;
+    }
+    return IsSPKHardForkEnabled(chainParams, pindexPrev->nHeight);
+}
+
+bool IsSPKHardForkEnabledForCurrentBlock(const CChainParams& chainParams) {
+    AssertLockHeld(cs_main);
+    return IsSPKHardForkEnabled(chainParams, chainActive.Tip());
+}
+
 bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const CTransaction &tx, bool fLimitFree,
                               bool* pfMissingInputs, bool fOverrideMempoolLimit, bool fRejectAbsurdFee,
                               std::vector<uint256>& vHashTxnToUncache, bool fDryRun)
@@ -1742,24 +1758,24 @@ NOTE:   unlike bitcoin we are using PREVIOUS block height here,
 CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
     CAmount nSubsidy = 0;
-    if(nPrevHeight < BLOCK_HEIGHT_REBORN) {
-        nSubsidy = GetLegacySubsidy(nPrevHeight);
+    if (IsSPKHardForkEnabled(consensusParams, nPrevHeight)) {    
+        nSubsidy = GetRebornSubsidy(nPrevHeight, consensusParams);
     }
     else {
-        nSubsidy = GetRebornSubsidy(nPrevHeight, consensusParams);
+        nSubsidy = GetLegacySubsidy(nPrevHeight);
     }
     LogPrintf("GetBlockSubsidy -- Reward for prevblock %d is %lld\n", nPrevHeight, nSubsidy);
     return fSuperblockPartOnly ? 0 : nSubsidy;
 }
 
-CAmount GetLegacySubsidy(int nPrevHeight)
+CAmount GetLegacySubsidy(int nPrevHeight, const Consensus::Params& consensusParams)
 {
     CAmount nSubsidy = 0;
     if (nPrevHeight == 0) {
-        nSubsidy = BLOCK_REWARD_PREMINE * COIN;
+        nSubsidy = consensusParams.consensus.nSPKPremine * COIN;
     }
     else {
-        nSubsidy = BLOCK_REWARD_LEGACY * COIN;
+        nSubsidy = consensusParams.consensus.nSPKSubsidyLegacy * COIN;
     }
     return nSubsidy;
 }
@@ -1767,11 +1783,59 @@ CAmount GetLegacySubsidy(int nPrevHeight)
 CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusParams)
 {
     CAmount nSubsidy = 0;
+    if(nPrevHeight == consensusParams.consensus.nSPKHeight)
+    {
+        nSubsidy = (consensusParams.consensus.nSPKSubidyReborn + consensusParams.consensus.nSPKPostmine) * COIN;
+    }
+    else
+    {
+        unsigned int nLuckyBlock = (nPrevHeight - consensusParams.consensus.nSPKHeight) / consensusParams.consensus.nSPKBlocksPerMonth;
+        switch(nLuckyBlock)
+        {
+            case 0:
+            case 1:
+            case 2:
+                nSubsidy = 1000 * COIN;
+                break;
+            case 3:
+            case 4:
+            case 5:
+                nSubsidy = 1500 * COIN;
+                break;
+            case 6:
+            case 7:
+            case 8:
+                nSubsidy = 2000 * COIN;
+                break;
+            case 9:
+            case 10:
+            case 11:
+                nSubsidy = 2500 * COIN;
+                break;
+            case 23:
+                nSubsidy = 3500 * COIN;
+                break;
+            case 35:
+                nSubsidy = 5500 * COIN;
+                break;
+            case 47:
+                nSubsidy = 9000 * COIN;
+                break;
+            case 59:
+                nSubsidy = 15000 * COIN;
+                break;
+            default:
+                nSubsidy = consensusParams.consensus.nSPKSubidyReborn * COIN;
+                // yearly decline of production by 12% per year, projected 136m coins max by year 2050+.
+                for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
+                    nSubsidy -= nSubsidy/12;
+                }
+                break;
+        }
+    }
+
     switch(nPrevHeight)
     {
-        case BLOCK_HEIGHT_REBORN:
-            nSubsidy = (BLOCK_REWARD_REBORN + BLOCK_REWARD_POSTMINE) * COIN;
-            break;
         case BLOCK_HEIGHT_REBORN + BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 2 * BLOCKS_PER_MONTH:
         case BLOCK_HEIGHT_REBORN + 3 * BLOCKS_PER_MONTH:
@@ -2713,6 +2777,12 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     if (VersionBitsState(pindex->pprev, chainparams.GetConsensus(), Consensus::DEPLOYMENT_CSV, versionbitscache) == THRESHOLD_ACTIVE) {
         flags |= SCRIPT_VERIFY_CHECKSEQUENCEVERIFY;
         nLockTimeFlags |= LOCKTIME_VERIFY_SEQUENCE;
+    }
+    
+    if (IsSPKHardForkEnabled(Params(), pindex->pprev)) {
+        flags |= SCRIPT_VERIFY_STRICTENC;
+    } else {
+        flags |= SCRIPT_ALLOW_NON_FORKID;
     }
 
     int64_t nTime2 = GetTimeMicros(); nTimeForks += nTime2 - nTime1;
