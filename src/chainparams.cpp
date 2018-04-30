@@ -106,6 +106,8 @@ public:
         consensus.nSPKSubsidyLegacy = 18;
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 21600;
+        consensus.strCoreAddress = "";
+        consensus.strPostmineAddress = "";
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -237,6 +239,8 @@ public:
         consensus.nSPKSubsidyLegacy = 18;
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 1;
+        consensus.strCoreAddress = "944ZZRFxKxoUdqvEaFQqukPzGFzPwdamFz";
+        consensus.strPostmineAddress = "98yMNBEHFoxvUGDQhc25yLh4AwBpqarA18";
 
         pchMessageStart[0] = 0xd1;
         pchMessageStart[1] = 0x2b;
@@ -343,6 +347,8 @@ public:
         consensus.nSPKSubsidyLegacy = 18;
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 1;
+        consensus.strCoreAddress = "944ZZRFxKxoUdqvEaFQqukPzGFzPwdamFz";
+        consensus.strPostmineAddress = "98yMNBEHFoxvUGDQhc25yLh4AwBpqarA18";
 
         pchMessageStart[0] = 0xa1;
         pchMessageStart[1] = 0xb3;

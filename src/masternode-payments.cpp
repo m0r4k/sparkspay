@@ -207,20 +207,29 @@ bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount bloc
     LogPrintf("IsBlockPayeeValid -- WARNING: Masternode payment enforcement is disabled, accepting any payee\n");
     return true;
 }
+
 void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward)
 {
     CAmount corePayment = GetCorePayment(nBlockHeight, blockReward);
     if(corePayment > 0)
     {
-        CBitcoinAddress coreAddress("nQvKgzJwYBtofzarkRFTAZS3TddbrGwXVW");
-        CTxDestination dest = coreAddress.Get();
+        CBitcoinAddress address;
+        const Consensus::Params& consensusParams = Params().GetConsensus();
+        if(nBlockHeight == consensusParams.nSPKHeight + 1) { // postmine block
+            address.SetString(consensusParams.strPostmineAddress);
+            LogPrintf("FillCorePayee -- Postmine to Core address\n", address.ToString());
+        }
+        else{
+            address.SetString(consensusParams.strCoreAddress);
+        }
+        CTxDestination dest = address.Get();
         CScript payee = GetScriptForDestination(dest);
         // split reward between miner ...
         txNew.vout[0].nValue -= corePayment;
         // ... and Core
         CTxOut txoutCore(corePayment, payee);
         txNew.vout.push_back(txoutCore);
-        LogPrintf("FillCorePayee -- Core payment %lld to %s for block %d reward %lld\n", corePayment, coreAddress.ToString(), nBlockHeight, blockReward);
+        LogPrintf("FillCorePayee -- Core payment %lld to %s for block %d reward %lld\n", corePayment, address.ToString(), nBlockHeight, blockReward);
     }
 }
 

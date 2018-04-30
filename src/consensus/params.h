@@ -64,6 +64,8 @@ struct Params {
     unsigned int nSPKSubsidyLegacy;
     unsigned int nSPKSubidyReborn;
     unsigned int nSPKBlocksPerMonth;
+    std::string strCoreAddress;
+    std::string strPostmineAddress;
     /**
      * Minimum blocks including miner confirmation of the total of 2016 blocks in a retargetting period,
      * (nPowTargetTimespan / nPowTargetSpacing) which is also used for BIP9 deployments.
