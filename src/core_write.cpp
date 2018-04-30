@@ -60,7 +60,7 @@ const map<unsigned char, string> mapSigHashTypes =
     (static_cast<unsigned char>(SIGHASH_ALL), string("ALL"))
     (static_cast<unsigned char>(SIGHASH_ALL|SIGHASH_ANYONECANPAY), string("ALL|ANYONECANPAY"))
     (static_cast<unsigned char>(SIGHASH_ALL|SIGHASH_FORKID), std::string("ALL|FORKID"))
-+   (static_cast<unsigned char>(SIGHASH_ALL|SIGHASH_FORKID|SIGHASH_ANYONECANPAY), std::string("ALL|FORKID|ANYONECANPAY"))
+    (static_cast<unsigned char>(SIGHASH_ALL|SIGHASH_FORKID|SIGHASH_ANYONECANPAY), std::string("ALL|FORKID|ANYONECANPAY"))
     (static_cast<unsigned char>(SIGHASH_NONE), string("NONE"))
     (static_cast<unsigned char>(SIGHASH_NONE|SIGHASH_ANYONECANPAY), string("NONE|ANYONECANPAY"))
     (static_cast<unsigned char>(SIGHASH_NONE|SIGHASH_FORKID), std::string("NONE|FORKID"))
@@ -68,7 +68,7 @@ const map<unsigned char, string> mapSigHashTypes =
     (static_cast<unsigned char>(SIGHASH_SINGLE), string("SINGLE"))
     (static_cast<unsigned char>(SIGHASH_SINGLE|SIGHASH_ANYONECANPAY), string("SINGLE|ANYONECANPAY"))
     (static_cast<unsigned char>(SIGHASH_SINGLE|SIGHASH_FORKID), std::string("SINGLE|FORKID"))
-+   (static_cast<unsigned char>(SIGHASH_SINGLE|SIGHASH_FORKID|SIGHASH_ANYONECANPAY), std::string("SINGLE|FORKID|ANYONECANPAY"))
+    (static_cast<unsigned char>(SIGHASH_SINGLE|SIGHASH_FORKID|SIGHASH_ANYONECANPAY), std::string("SINGLE|FORKID|ANYONECANPAY"))
     ;
 
 /**
