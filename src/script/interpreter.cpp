@@ -175,9 +175,6 @@ bool static IsLowDERSignature(const valtype &vchSig, ScriptError* serror) {
     if (!CPubKey::CheckLowS(vchSigCopy)) {
         return set_error(serror, SCRIPT_ERR_SIG_HIGH_S);
     }
-    unsigned char nHashType = GetHashType(vchSig) & (~(SIGHASH_ANYONECANPAY | SIGHASH_FORKID));
-    if (nHashType < SIGHASH_ALL || nHashType > SIGHASH_SINGLE)
-        return false;
     return true;
 }
 
@@ -185,7 +182,7 @@ bool static IsDefinedHashtypeSignature(const valtype &vchSig) {
     if (vchSig.size() == 0) {
         return false;
     }
-    unsigned char nHashType = vchSig[vchSig.size() - 1] & (~(SIGHASH_ANYONECANPAY));
+    unsigned char nHashType = GetHashType(vchSig) & (~(SIGHASH_ANYONECANPAY | SIGHASH_FORKID));
     if (nHashType < SIGHASH_ALL || nHashType > SIGHASH_SINGLE)
         return false;
 
