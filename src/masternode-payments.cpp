@@ -217,7 +217,7 @@ void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockRe
         const Consensus::Params& consensusParams = Params().GetConsensus();
         if(nBlockHeight == consensusParams.nSPKHeight + 1) { // postmine block
             address.SetString(consensusParams.strPostmineAddress);
-            LogPrintf("FillCorePayee -- Postmine to Core address\n", address.ToString());
+            LogPrintf("FillCorePayee -- Postmine to Core address %s\n", address.ToString());
         }
         else{
             address.SetString(consensusParams.strCoreAddress);
