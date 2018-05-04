@@ -36,7 +36,7 @@ sign_multisig(CScript scriptPubKey, vector<CKey> keys, CTransaction transaction,
     {
         vector<unsigned char> vchSig;
         BOOST_CHECK(key.Sign(hash, vchSig));
-        vchSig.push_back((unsigned char)(SIGHASH_ALL | SIGHASH_FORKID);
+        vchSig.push_back((unsigned char)(SIGHASH_ALL | SIGHASH_FORKID));
         result << vchSig;
     }
     return result;
