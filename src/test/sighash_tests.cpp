@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(sighash_test)
         uint256 sh, sho;
 
         if (nHashType & SIGHASH_FORKID)
-+            continue;
+            continue;
 
         sho = SignatureHashOld(scriptCode, txTo, nIn, nHashType);
         sh = SignatureHash(scriptCode, txTo, nIn, nHashType);
