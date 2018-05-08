@@ -1,6 +1,6 @@
-Discord channel: https://discord.gg/RPXtRG
+Discord channel: https://discord.gg/TaYsEsX
 
-Sparks Core staging tree 0.12.1
+Sparks Core staging tree 0.12.2
 ===============================
 
 `master:` [![Build Status](https://travis-ci.org/Sparkscoin/Sparks.svg?branch=master)](https://travis-ci.org/Sparkscoin/Sparks) `v0.12.0.x:` [![Build Status](https://travis-ci.org/Sparkscoin/Sparks.svg?branch=v0.12.0.x)](https://travis-ci.org/Sparkscoin/Sparks/branches) `v0.12.1.x:` [![Build Status](https://travis-ci.org/Sparkscoin/Sparks.svg?branch=v0.12.1.x)](https://travis-ci.org/Sparkscoin/Sparks/branches)
@@ -25,7 +25,7 @@ Development Process
 -------------------
 
 The `master` branch is meant to be stable. Development is normally done in separate branches.
-[Tags](https://github.com/Sparkscoin/Sparks/tags) are created to indicate new official,
+[Tags](https://github.com/SparksReborn/sparkspay/tags) are created to indicate new official,
 stable release versions of Sparks Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
