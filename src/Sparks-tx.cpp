@@ -371,7 +371,7 @@ vector<unsigned char> ParseHexUO(map<string,UniValue>& o, string strKey)
 
 static void MutateTxSign(CMutableTransaction& tx, const string& flagStr)
 {
-    int nHashType = SIGHASH_ALL | SIGHASH_FORKID;
+    int nHashType = SIGHASH_ALL/* | SIGHASH_FORKID*/;
 
     if (flagStr.size() > 0)
         if (!findSighashFlags(nHashType, flagStr))
@@ -457,7 +457,7 @@ static void MutateTxSign(CMutableTransaction& tx, const string& flagStr)
 
     const CKeyStore& keystore = tempKeystore;
 
-    bool fHashSingle = ((nHashType & ~(SIGHASH_ANYONECANPAY| SIGHASH_FORKID)) == SIGHASH_SINGLE);
+    bool fHashSingle = ((nHashType & ~(SIGHASH_ANYONECANPAY /*| SIGHASH_FORKID*/)) == SIGHASH_SINGLE);
 
     // Sign what we can:
     for (unsigned int i = 0; i < mergedTx.vin.size(); i++) {

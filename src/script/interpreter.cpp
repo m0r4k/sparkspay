@@ -182,7 +182,7 @@ bool static IsDefinedHashtypeSignature(const valtype &vchSig) {
     if (vchSig.size() == 0) {
         return false;
     }
-    unsigned char nHashType = GetHashType(vchSig) & (~(SIGHASH_ANYONECANPAY | SIGHASH_FORKID));
+    unsigned char nHashType = GetHashType(vchSig) & (~(SIGHASH_ANYONECANPAY /*| SIGHASH_FORKID*/));
     if (nHashType < SIGHASH_ALL || nHashType > SIGHASH_SINGLE)
         return false;
 
@@ -216,10 +216,10 @@ bool CheckSignatureEncoding(const vector<unsigned char> &vchSig, unsigned int fl
     } else if ((flags & SCRIPT_VERIFY_STRICTENC) != 0) {
         if (!IsDefinedHashtypeSignature(vchSig))
             return set_error(serror, SCRIPT_ERR_SIG_HASHTYPE);
-        bool requiresForkId = !AllowsNonForkId(flags);
-        bool usesForkId = UsesForkId(vchSig);
-        if (requiresForkId && !usesForkId)
-            return set_error(serror, SCRIPT_ERR_SIG_HASHTYPE);        
+        // bool requiresForkId = !AllowsNonForkId(flags);
+        // bool usesForkId = UsesForkId(vchSig);
+        // if (requiresForkId && !usesForkId)
+        //     return set_error(serror, SCRIPT_ERR_SIG_HASHTYPE);        
     }
     return true;
 }

@@ -751,7 +751,7 @@ UniValue signrawtransaction(const UniValue& params, bool fHelp)
     const CKeyStore& keystore = tempKeystore;
 #endif
 
-    int nHashType = SIGHASH_ALL | SIGHASH_FORKID;
+    int nHashType = SIGHASH_ALL /*| SIGHASH_FORKID*/;
     if (params.size() > 3 && !params[3].isNull()) {
         static map<string, int> mapSigHashValues =
             boost::assign::map_list_of
@@ -773,11 +773,11 @@ UniValue signrawtransaction(const UniValue& params, bool fHelp)
             nHashType = mapSigHashValues[strHashType];
         else
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid sighash param");
-        if (!(nHashType & SIGHASH_FORKID))
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Signature must use SIGHASH_FORKID");
+        // if (!(nHashType & SIGHASH_FORKID))
+        //     throw JSONRPCError(RPC_INVALID_PARAMETER, "Signature must use SIGHASH_FORKID");
     }
 
-    bool fHashSingle = ((nHashType & ~(SIGHASH_ANYONECANPAY | SIGHASH_FORKID)) == SIGHASH_SINGLE);
+    bool fHashSingle = ((nHashType & ~(SIGHASH_ANYONECANPAY /*| SIGHASH_FORKID*/)) == SIGHASH_SINGLE);
 
     // Script verification errors
     UniValue vErrors(UniValue::VARR);

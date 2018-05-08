@@ -2739,11 +2739,11 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         nLockTimeFlags |= LOCKTIME_VERIFY_SEQUENCE;
     }
     
-    if (IsSPKHardForkEnabled(chainparams.GetConsensus(), pindex->pprev)) {
-        flags |= SCRIPT_VERIFY_STRICTENC;
-    } else {
-        flags |= SCRIPT_ALLOW_NON_FORKID;
-    }
+    // if (IsSPKHardForkEnabled(chainparams.GetConsensus(), pindex->pprev)) {
+    //     flags |= SCRIPT_VERIFY_STRICTENC;
+    // } else {
+    //     flags |= SCRIPT_ALLOW_NON_FORKID;
+    // }
 
     int64_t nTime2 = GetTimeMicros(); nTimeForks += nTime2 - nTime1;
     LogPrint("bench", "    - Fork checks: %.2fms [%.2fs]\n", 0.001 * (nTime2 - nTime1), nTimeForks * 0.000001);
