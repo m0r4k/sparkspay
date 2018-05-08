@@ -106,8 +106,8 @@ public:
         consensus.nSPKSubsidyLegacy = 18;
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 21600;
-        consensus.strCoreAddress = "";
-        consensus.strPostmineAddress = "";
+        consensus.strCoreAddress = "53ib7ijmLddhCNPsSdQgoLA3CgxGnmDLjV";
+        consensus.strPostmineAddress = "542V6NRR8os6qzfPJ5oNG9Af8GsUtakhXH";
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
