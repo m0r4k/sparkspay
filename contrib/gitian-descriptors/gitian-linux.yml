@@ -20,7 +20,7 @@ packages:
 - "python"
 reference_datetime: "2017-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/Sparkscoin/Sparks.git"
+- "url": "https://github.com/SparksReborn/sparkspay.git"
   "dir": "Sparks"
 files: []
 script: |
