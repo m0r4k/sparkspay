@@ -4,13 +4,13 @@
 
 #include "consensus/validation.h"
 #include "key.h"
-#include "main.h"
+#include "validation.h"
 #include "miner.h"
 #include "pubkey.h"
 #include "txmempool.h"
 #include "random.h"
 #include "script/standard.h"
-#include "test/test_Sparks.h"
+#include "test/test_sparks.h"
 #include "utiltime.h"
 
 #include <boost/test/unit_test.hpp>
@@ -48,7 +48,7 @@ BOOST_FIXTURE_TEST_CASE(tx_mempool_block_doublespend, TestChain100Setup)
 
         // Sign:
         std::vector<unsigned char> vchSig;
-        uint256 hash = SignatureHash(scriptPubKey, spends[i], 0, SIGHASH_ALL | SIGHASH_FORKID);
+        uint256 hash = SignatureHash(scriptPubKey, spends[i], 0, SIGHASH_ALL);
         BOOST_CHECK(coinbaseKey.Sign(hash, vchSig));
         vchSig.push_back((unsigned char)SIGHASH_ALL);
         spends[i].vin[0].scriptSig << vchSig;

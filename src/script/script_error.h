@@ -52,9 +52,6 @@ typedef enum ScriptError_t
     /* softfork safeness */
     SCRIPT_ERR_DISCOURAGE_UPGRADABLE_NOPS,
 
-     /* fork id */
-    SCRIPT_ERR_MUST_USE_FORKID,
-
     SCRIPT_ERR_ERROR_COUNT
 } ScriptError;
 

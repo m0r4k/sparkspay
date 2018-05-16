@@ -5,7 +5,7 @@
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
 
-#include "test/test_Sparks.h"
+#include "test/test_sparks.h"
 
 #include <stdint.h>
 

@@ -1,5 +1,5 @@
 ---
-name: "Sparks-dmg-signer"
+name: "sparks-dmg-signer"
 suites:
 - "trusty"
 architectures:
@@ -8,10 +8,10 @@ packages:
 - "faketime"
 reference_datetime: "2017-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/Sparkscoin/Sparks-detached-sigs.git"
+- "url": "https://github.com/sparkspay/sparks-detached-sigs.git"
   "dir": "signature"
 files:
-- "Sparks-osx-unsigned.tar.gz"
+- "sparks-osx-unsigned.tar.gz"
 script: |
   WRAP_DIR=$HOME/wrapped
   mkdir -p ${WRAP_DIR}
@@ -28,8 +28,8 @@ script: |
     chmod +x ${WRAP_DIR}/${prog}
   done
 
-  UNSIGNED=Sparks-osx-unsigned.tar.gz
-  SIGNED=Sparks-osx-signed.dmg
+  UNSIGNED=sparks-osx-unsigned.tar.gz
+  SIGNED=sparks-osx-signed.dmg
 
   tar -xf ${UNSIGNED}
   ./detached-sig-apply.sh ${UNSIGNED} signature/osx

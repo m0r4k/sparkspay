@@ -24,7 +24,7 @@ make
 make install # optional
 ```
 
-This will build Sparks-qt as well if the dependencies are met.
+This will build sparks-qt as well if the dependencies are met.
 
 Dependencies
 ---------------------
@@ -46,6 +46,7 @@ Optional dependencies:
  qt          | GUI              | GUI toolkit (only needed when GUI enabled)
  protobuf    | Payments in GUI  | Data interchange format used for payment protocol (only needed when GUI enabled)
  libqrencode | QR codes in GUI  | Optional for generating QR codes (only needed when GUI enabled)
+ univalue    | Utility          | JSON parsing and encoding (bundled version will be used unless --with-system-univalue passed to configure)
  libzmq3     | ZMQ notification | Optional, allows generating ZMQ notifications (requires ZMQ version >= 4.x)
 
 For the versions used in the release, see [release-process.md](release-process.md) under *Fetch and build inputs*.
@@ -115,12 +116,12 @@ libqrencode (optional) can be installed with:
 
     sudo apt-get install libqrencode-dev
 
-Once these are installed, they will be found by configure and a Sparks-qt executable will be
+Once these are installed, they will be found by configure and a sparks-qt executable will be
 built by default.
 
 Notes
 -----
-The release is built with GCC and then "strip Sparksd" to strip the debug
+The release is built with GCC and then "strip sparksd" to strip the debug
 symbols, which reduces the executable size by about 90%.
 
 
@@ -141,10 +142,10 @@ Berkeley DB
 It is recommended to use Berkeley DB 4.8. If you have to build it yourself:
 
 ```bash
-SPK_ROOT=$(pwd)
+SPARKS_ROOT=$(pwd)
 
-# Pick some path to install BDB to, here we create a directory within the Sparks directory
-BDB_PREFIX="${SPK_ROOT}/db4"
+# Pick some path to install BDB to, here we create a directory within the sparks directory
+BDB_PREFIX="${SPARKS_ROOT}/db4"
 mkdir -p $BDB_PREFIX
 
 # Fetch the source and verify that it is not tampered with
@@ -160,7 +161,7 @@ cd db-4.8.30.NC/build_unix/
 make install
 
 # Configure Sparks Core to use our own-built instance of BDB
-cd $SPK_ROOT
+cd $SPARKS_ROOT
 ./autogen.sh
 ./configure LDFLAGS="-L${BDB_PREFIX}/lib/" CPPFLAGS="-I${BDB_PREFIX}/include/" # (other args...)
 ```
@@ -202,7 +203,7 @@ Hardening enables the following features:
 
     To test that you have built PIE executable, install scanelf, part of paxutils, and use:
 
-    	scanelf -e ./Sparksd
+    	scanelf -e ./sparksd
 
     The output should contain:
 
@@ -217,7 +218,7 @@ Hardening enables the following features:
     executable without the non-executable stack protection.
 
     To verify that the stack is non-executable after compiling use:
-    `scanelf -e ./Sparksd`
+    `scanelf -e ./sparksd`
 
     the output should contain:
 	STK/REL/PTL

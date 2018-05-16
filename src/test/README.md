@@ -5,9 +5,9 @@ sense to simply use this framework rather than require developers to
 configure some other framework (we want as few impediments to creating
 unit tests as possible).
 
-The build system is setup to compile an executable called "test_Sparks"
+The build system is setup to compile an executable called "test_sparks"
 that runs all of the unit tests.  The main source file is called
-test_Sparks.cpp, which simply includes other files that contain the
+test_sparks.cpp, which simply includes other files that contain the
 actual unit tests (outside of a couple required preprocessor
 directives).  The pattern is to create one test file for each class or
 source file for which you want to create unit tests.  The file naming
@@ -22,14 +22,14 @@ For further reading, I found the following website to be helpful in
 explaining how the boost unit test framework works:
 [http://www.alittlemadness.com/2009/03/31/c-unit-testing-with-boosttest/](http://www.alittlemadness.com/2009/03/31/c-unit-testing-with-boosttest/).
 
-test_Sparks has some built-in command-line arguments; for
+test_sparks has some built-in command-line arguments; for
 example, to run just the getarg_tests verbosely:
 
-    test_Sparks --log_level=all --run_test=getarg_tests
+    test_sparks --log_level=all --run_test=getarg_tests
 
-... or to run just the doubleSparks test:
+... or to run just the doublesparks test:
 
-    test_Sparks --run_test=getarg_tests/doubleSparks
+    test_sparks --run_test=getarg_tests/doublesparks
 
-Run  test_Sparks --help   for the full list.
+Run  test_sparks --help   for the full list.
 

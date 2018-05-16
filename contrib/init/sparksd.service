@@ -3,13 +3,13 @@ Description=Sparks's distributed currency daemon
 After=network.target
 
 [Service]
-User=Sparkscore
-Group=Sparkscore
+User=sparkscore
+Group=sparkscore
 
 Type=forking
-PIDFile=/var/lib/Sparksd/Sparksd.pid
-ExecStart=/usr/bin/Sparksd -daemon -pid=/var/lib/Sparksd/Sparksd.pid \
--conf=/etc/Sparkscore/Sparks.conf -datadir=/var/lib/Sparksd -disablewallet
+PIDFile=/var/lib/sparksd/sparksd.pid
+ExecStart=/usr/bin/sparksd -daemon -pid=/var/lib/sparksd/sparksd.pid \
+-conf=/etc/sparkscore/sparks.conf -datadir=/var/lib/sparksd -disablewallet
 
 Restart=always
 PrivateTmp=true

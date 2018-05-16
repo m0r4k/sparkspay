@@ -1,6 +1,5 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2017-2018 The Sparks Core developers
+// Copyright (c) 2014-2017 The Sparks Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,7 +11,7 @@
 
 #include "base58.h"
 #include "chainparams.h"
-#include "main.h" // For minRelayTxFee
+#include "validation.h" // For minRelayTxFee
 #include "ui_interface.h"
 #include "util.h"
 #include "wallet/wallet.h"
@@ -49,25 +48,30 @@
 #endif
 
 const int BITCOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
-const QString BITCOIN_IPC_PREFIX("Sparks:");
+const QString BITCOIN_IPC_PREFIX("sparks:");
 // BIP70 payment protocol messages
 const char* BIP70_MESSAGE_PAYMENTACK = "PaymentACK";
 const char* BIP70_MESSAGE_PAYMENTREQUEST = "PaymentRequest";
 // BIP71 payment protocol media types
-const char* BIP71_MIMETYPE_PAYMENT = "application/Sparks-payment";
-const char* BIP71_MIMETYPE_PAYMENTACK = "application/Sparks-paymentack";
-const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/Sparks-paymentrequest";
+const char* BIP71_MIMETYPE_PAYMENT = "application/sparks-payment";
+const char* BIP71_MIMETYPE_PAYMENTACK = "application/sparks-paymentack";
+const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/sparks-paymentrequest";
 // BIP70 max payment request size in bytes (DoS protection)
 const qint64 BIP70_MAX_PAYMENTREQUEST_SIZE = 50000;
 
-X509_STORE* PaymentServer::certStore = NULL;
-void PaymentServer::freeCertStore()
+struct X509StoreDeleter {
+      void operator()(X509_STORE* b) {
+          X509_STORE_free(b);
+      }
+};
+
+struct X509Deleter {
+      void operator()(X509* b) { X509_free(b); }
+};
+
+namespace // Anon namespace
 {
-    if (PaymentServer::certStore != NULL)
-    {
-        X509_STORE_free(PaymentServer::certStore);
-        PaymentServer::certStore = NULL;
-    }
+    std::unique_ptr<X509_STORE, X509StoreDeleter> certStore;
 }
 
 //
@@ -109,20 +113,15 @@ static void ReportInvalidCertificate(const QSslCertificate& cert)
 //
 void PaymentServer::LoadRootCAs(X509_STORE* _store)
 {
-    if (PaymentServer::certStore == NULL)
-        atexit(PaymentServer::freeCertStore);
-    else
-        freeCertStore();
-
     // Unit tests mostly use this, to pass in fake root CAs:
     if (_store)
     {
-        PaymentServer::certStore = _store;
+        certStore.reset(_store);
         return;
     }
 
     // Normal execution, use either -rootcertificates or system certs:
-    PaymentServer::certStore = X509_STORE_new();
+    certStore.reset(X509_STORE_new());
 
     // Note: use "-system-" default here so that users can pass -rootcertificates=""
     // and get 'I don't like X.509 certificates, don't trust anybody' behavior:
@@ -169,11 +168,11 @@ void PaymentServer::LoadRootCAs(X509_STORE* _store)
         QByteArray certData = cert.toDer();
         const unsigned char *data = (const unsigned char *)certData.data();
 
-        X509* x509 = d2i_X509(0, &data, certData.size());
-        if (x509 && X509_STORE_add_cert(PaymentServer::certStore, x509))
+        std::unique_ptr<X509, X509Deleter> x509(d2i_X509(0, &data, certData.size()));
+        if (x509 && X509_STORE_add_cert(certStore.get(), x509.get()))
         {
-            // Note: X509_STORE_free will free the X509* objects when
-            // the PaymentServer is destroyed
+            // Note: X509_STORE increases the reference count to the X509 object,
+            // we still have to release our reference to it.
             ++nRootCerts;
         }
         else
@@ -211,11 +210,11 @@ void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
         if (arg.startsWith("-"))
             continue;
 
-        // If the Sparks: URI contains a payment request, we are not able to detect the
+        // If the sparks: URI contains a payment request, we are not able to detect the
         // network as that would require fetching and parsing the payment request.
         // That means clicking such an URI which contains a testnet payment request
         // will start a mainnet instance and throw a "wrong network" error.
-        if (arg.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // Sparks: URI
+        if (arg.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // sparks: URI
         {
             savedPaymentRequests.append(arg);
 
@@ -311,7 +310,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     // Install global event filter to catch QFileOpenEvents
-    // on Mac: sent when you click Sparks: links
+    // on Mac: sent when you click sparks: links
     // other OSes: helpful when dealing with payment request files
     if (parent)
         parent->installEventFilter(this);
@@ -328,7 +327,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
         if (!uriServer->listen(name)) {
             // constructor is called early in init, so don't use "Q_EMIT message()" here
             QMessageBox::critical(0, tr("Payment request error"),
-                tr("Cannot start Sparks: click-to-pay handler"));
+                tr("Cannot start sparks: click-to-pay handler"));
         }
         else {
             connect(uriServer, SIGNAL(newConnection()), this, SLOT(handleURIConnection()));
@@ -343,7 +342,7 @@ PaymentServer::~PaymentServer()
 }
 
 //
-// OSX-specific way of handling Sparks: URIs and PaymentRequest mime types.
+// OSX-specific way of handling sparks: URIs and PaymentRequest mime types.
 // Also used by paymentservertests.cpp and when opening a payment request file
 // via "Open URI..." menu entry.
 //
@@ -369,7 +368,7 @@ void PaymentServer::initNetManager()
     if (netManager != NULL)
         delete netManager;
 
-    // netManager is used to fetch paymentrequests given in Sparks: URIs
+    // netManager is used to fetch paymentrequests given in sparks: URIs
     netManager = new QNetworkAccessManager(this);
 
     QNetworkProxy proxy;
@@ -409,7 +408,7 @@ void PaymentServer::handleURIOrFile(const QString& s)
         return;
     }
 
-    if (s.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // Sparks: URI
+    if (s.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // sparks: URI
     {
 #if QT_VERSION < 0x050000
         QUrl uri(s);
@@ -552,7 +551,7 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
     recipient.paymentRequest = request;
     recipient.message = GUIUtil::HtmlEscape(request.getDetails().memo());
 
-    request.getMerchant(PaymentServer::certStore, recipient.authenticatedMerchant);
+    request.getMerchant(certStore.get(), recipient.authenticatedMerchant);
 
     QList<std::pair<CScript, CAmount> > sendingTos = request.getPayTo();
     QStringList addresses;
@@ -565,7 +564,7 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
             addresses.append(QString::fromStdString(CBitcoinAddress(dest).ToString()));
         }
         else if (!recipient.authenticatedMerchant.isEmpty()) {
-            // Unauthenticated payment requests to custom Sparks addresses are not supported
+            // Unauthenticated payment requests to custom sparks addresses are not supported
             // (there is no good way to tell the user where they are paying in a way they'd
             // have a chance of understanding).
             Q_EMIT message(tr("Payment request rejected"),
@@ -650,7 +649,7 @@ void PaymentServer::fetchPaymentACK(CWallet* wallet, SendCoinsRecipient recipien
     }
     else {
         CPubKey newKey;
-        if (wallet->GetKeyFromPool(newKey)) {
+        if (wallet->GetKeyFromPool(newKey, false)) {
             CKeyID keyID = newKey.GetID();
             wallet->SetAddressBook(keyID, strAccount, "refund");
 
@@ -808,4 +807,9 @@ bool PaymentServer::verifyAmount(const CAmount& requestAmount)
             .arg(MAX_MONEY);
     }
     return fVerified;
+}
+
+X509_STORE* PaymentServer::getCertStore()
+{
+    return certStore.get();
 }

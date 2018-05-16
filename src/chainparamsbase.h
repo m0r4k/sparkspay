@@ -9,7 +9,7 @@
 #include <vector>
 
 /**
- * CBaseChainParams defines the base parameters (shared between Sparks-cli and Sparksd)
+ * CBaseChainParams defines the base parameters (shared between sparks-cli and sparksd)
  * of a given instance of the Sparks system.
  */
 class CBaseChainParams

@@ -1,6 +1,5 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2017-2018 The Sparks Core developers
+// Copyright (c) 2014-2017 The Sparks Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,9 +19,9 @@ BitcoinUnits::BitcoinUnits(QObject *parent):
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(SPK);
-    unitlist.append(mSPK);
-    unitlist.append(uSPK);
+    unitlist.append(SPARKS);
+    unitlist.append(mSPARKS);
+    unitlist.append(uSPARKS);
     unitlist.append(duffs);
     return unitlist;
 }
@@ -31,9 +30,9 @@ bool BitcoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case SPK:
-    case mSPK:
-    case uSPK:
+    case SPARKS:
+    case mSPARKS:
+    case uSPARKS:
     case duffs:
         return true;
     default:
@@ -47,9 +46,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case SPK: return QString("SPK");
-            case mSPK: return QString("mSPK");
-            case uSPK: return QString::fromUtf8("μSPK");
+            case SPARKS: return QString("SPK");
+            case mSPARKS: return QString("mSPK");
+            case uSPARKS: return QString::fromUtf8("μSPK");
             case duffs: return QString("duffs");
             default: return QString("???");
         }
@@ -58,9 +57,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case SPK: return QString("tSPK");
-            case mSPK: return QString("mtSPK");
-            case uSPK: return QString::fromUtf8("μtSPK");
+            case SPARKS: return QString("tSPK");
+            case mSPARKS: return QString("mtSPK");
+            case uSPARKS: return QString::fromUtf8("μtSPK");
             case duffs: return QString("tduffs");
             default: return QString("???");
         }
@@ -73,9 +72,9 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case SPK: return QString("Sparks");
-            case mSPK: return QString("Milli-Sparks (1 / 1" THIN_SP_UTF8 "000)");
-            case uSPK: return QString("Micro-Sparks (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case SPARKS: return QString("Sparks");
+            case mSPARKS: return QString("Milli-Sparks (1 / 1" THIN_SP_UTF8 "000)");
+            case uSPARKS: return QString("Micro-Sparks (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             case duffs: return QString("Ten Nano-Sparks (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
@@ -84,9 +83,9 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case SPK: return QString("TestSparkss");
-            case mSPK: return QString("Milli-TestSparks (1 / 1" THIN_SP_UTF8 "000)");
-            case uSPK: return QString("Micro-TestSparks (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case SPARKS: return QString("TestSparks");
+            case mSPARKS: return QString("Milli-TestSparks (1 / 1" THIN_SP_UTF8 "000)");
+            case uSPARKS: return QString("Micro-TestSparks (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             case duffs: return QString("Ten Nano-TestSparks (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
@@ -97,9 +96,9 @@ qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case SPK:  return 100000000;
-    case mSPK: return 100000;
-    case uSPK: return 100;
+    case SPARKS:  return 100000000;
+    case mSPARKS: return 100000;
+    case uSPARKS: return 100;
     case duffs: return 1;
     default:   return 100000000;
     }
@@ -109,9 +108,9 @@ int BitcoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case SPK: return 8;
-    case mSPK: return 5;
-    case uSPK: return 2;
+    case SPARKS: return 8;
+    case mSPARKS: return 5;
+    case uSPARKS: return 2;
     case duffs: return 0;
     default: return 0;
     }

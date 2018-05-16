@@ -4,7 +4,7 @@
 
 	* means the category has an associated class
 	
-	CSparksNetwork: Sparks NETWORK (ROOT)
+	CSparksNetwork: SPARKS NETWORK (ROOT)
 	has:
 		vector<CNetworkVariable> vecNetworkVariables;
 		vector<CSparksProject> vecProjects;
@@ -19,7 +19,7 @@
 
 */
 
-	// Sparks NETWORK (ROOT)
+	// SPARKS NETWORK (ROOT)
 	// 	-> NETWORK VARIABLE
 	// 		-> switch, setting
 	// 	-> CATEGORIES
@@ -49,7 +49,7 @@
 	// 			-> USER1 (only users are allowed here in this scope)
 	// 			-> USER2
 	// 		-> GROUP2 (EVO)
-	// 			-> VALUEOVERRIDE (STORE=SPKDRIVE)
+	// 			-> VALUEOVERRIDE (STORE=SPARKSDRIVE)
 	// 			-> USER1
 
 	// 	-> COMPANIES
