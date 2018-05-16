@@ -2,16 +2,16 @@ ACLOCAL_AMFLAGS = -I build-aux/m4
 SUBDIRS = src
 .PHONY: deploy FORCE
 
-export PYTHONPATH
+GZIP_ENV="-9n"
 
 if BUILD_BITCOIN_LIBS
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libbitcoinconsensus.pc
+pkgconfig_DATA = libsparksconsensus.pc
 endif
 
-BITCOIND_BIN=$(top_builddir)/src/Sparksd$(EXEEXT)
-BITCOIN_QT_BIN=$(top_builddir)/src/qt/Sparks-qt$(EXEEXT)
-BITCOIN_CLI_BIN=$(top_builddir)/src/Sparks-cli$(EXEEXT)
+BITCOIND_BIN=$(top_builddir)/src/sparksd$(EXEEXT)
+BITCOIN_QT_BIN=$(top_builddir)/src/qt/sparks-qt$(EXEEXT)
+BITCOIN_CLI_BIN=$(top_builddir)/src/sparks-cli$(EXEEXT)
 BITCOIN_WIN_INSTALLER=$(PACKAGE)-$(PACKAGE_VERSION)-win$(WINDOWS_BITS)-setup$(EXEEXT)
 
 OSX_APP=Sparks-Qt.app
@@ -41,9 +41,9 @@ OSX_PACKAGING = $(OSX_DEPLOY_SCRIPT) $(OSX_FANCY_PLIST) $(OSX_INSTALLER_ICONS) $
   $(top_srcdir)/contrib/macdeploy/detached-sig-create.sh
 
 COVERAGE_INFO = baseline_filtered_combined.info baseline.info block_test.info \
-  leveldb_baseline.info test_Sparks_filtered.info total_coverage.info \
+  leveldb_baseline.info test_sparks_filtered.info total_coverage.info \
   baseline_filtered.info block_test_filtered.info rpc_test.info rpc_test_filtered.info \
-  leveldb_baseline_filtered.info test_Sparks_coverage.info test_Sparks.info
+  leveldb_baseline_filtered.info test_sparks_coverage.info test_sparks.info
 
 dist-hook:
 	-$(MAKE) -C $(top_distdir)/src/leveldb clean
@@ -55,6 +55,8 @@ distcheck-hook:
 	cp -rf $(top_srcdir)/src/leveldb/* $(top_distdir)/_build/src/leveldb/
 	-$(MAKE) -C $(top_distdir)/_build/src/leveldb clean
 
+distcleancheck:
+	@:
 
 $(BITCOIN_WIN_INSTALLER): all-recursive
 	$(MKDIR_P) $(top_builddir)/release
@@ -160,16 +162,16 @@ leveldb_baseline_filtered.info: leveldb_baseline.info
 baseline_filtered_combined.info: leveldb_baseline_filtered.info baseline_filtered.info
 	$(LCOV) -a leveldb_baseline_filtered.info -a baseline_filtered.info -o $@
 
-test_Sparks.info: baseline_filtered_combined.info
+test_sparks.info: baseline_filtered_combined.info
 	$(MAKE) -C src/ check
-	$(LCOV) -c -d $(abs_builddir)/src -t test_Sparks -o $@
+	$(LCOV) -c -d $(abs_builddir)/src -t test_sparks -o $@
 	$(LCOV) -z -d $(abs_builddir)/src
 	$(LCOV) -z -d $(abs_builddir)/src/leveldb
 
-test_Sparks_filtered.info: test_Sparks.info
+test_sparks_filtered.info: test_sparks.info
 	$(LCOV) -r $< "/usr/include/*" -o $@
 
-block_test.info: test_Sparks_filtered.info
+block_test.info: test_sparks_filtered.info
 	$(MKDIR_P) qa/tmp
 	-@TIMEOUT=15 qa/pull-tester/run-bitcoind-for-test.sh $(JAVA) -jar $(JAVA_COMPARISON_TOOL) qa/tmp/compTool $(COMPARISON_TOOL_REORG_TESTS)
 	$(LCOV) -c -d $(abs_builddir)/src --t BitcoinJBlockTest -o $@
@@ -179,7 +181,7 @@ block_test.info: test_Sparks_filtered.info
 block_test_filtered.info: block_test.info
 	$(LCOV) -r $< "/usr/include/*" -o $@
 
-rpc_test.info: test_Sparks_filtered.info
+rpc_test.info: test_sparks_filtered.info
 	-@TIMEOUT=15 python qa/pull-tester/rpc-tests.py $(EXTENDED_RPC_TESTS)
 	$(LCOV) -c -d $(abs_builddir)/src --t rpc-tests -o $@
 	$(LCOV) -z -d $(abs_builddir)/src
@@ -188,13 +190,13 @@ rpc_test.info: test_Sparks_filtered.info
 rpc_test_filtered.info: rpc_test.info
 	$(LCOV) -r $< "/usr/include/*" -o $@
 
-test_Sparks_coverage.info: baseline_filtered_combined.info test_Sparks_filtered.info
-	$(LCOV) -a baseline_filtered.info -a leveldb_baseline_filtered.info -a test_Sparks_filtered.info -o $@
+test_sparks_coverage.info: baseline_filtered_combined.info test_sparks_filtered.info
+	$(LCOV) -a baseline_filtered.info -a leveldb_baseline_filtered.info -a test_sparks_filtered.info -o $@
 
-total_coverage.info: baseline_filtered_combined.info test_Sparks_filtered.info block_test_filtered.info rpc_test_filtered.info
-	$(LCOV) -a baseline_filtered.info -a leveldb_baseline_filtered.info -a test_Sparks_filtered.info -a block_test_filtered.info -a rpc_test_filtered.info -o $@ | $(GREP) "\%" | $(AWK) '{ print substr($$3,2,50) "/" $$5 }' > coverage_percent.txt
+total_coverage.info: baseline_filtered_combined.info test_sparks_filtered.info block_test_filtered.info rpc_test_filtered.info
+	$(LCOV) -a baseline_filtered.info -a leveldb_baseline_filtered.info -a test_sparks_filtered.info -a block_test_filtered.info -a rpc_test_filtered.info -o $@ | $(GREP) "\%" | $(AWK) '{ print substr($$3,2,50) "/" $$5 }' > coverage_percent.txt
 
-test_Sparks.coverage/.dirstamp:  test_Sparks_coverage.info
+test_sparks.coverage/.dirstamp:  test_sparks_coverage.info
 	$(GENHTML) -s $< -o $(@D)
 	@touch $@
 
@@ -202,7 +204,7 @@ total.coverage/.dirstamp: total_coverage.info
 	$(GENHTML) -s $< -o $(@D)
 	@touch $@
 
-cov: test_Sparks.coverage/.dirstamp total.coverage/.dirstamp
+cov: test_sparks.coverage/.dirstamp total.coverage/.dirstamp
 
 endif
 
@@ -223,4 +225,4 @@ CLEANFILES = $(OSX_DMG) $(BITCOIN_WIN_INSTALLER)
 .INTERMEDIATE: $(COVERAGE_INFO)
 
 clean-local:
-	rm -rf coverage_percent.txt test_Sparks.coverage/ total.coverage/ qa/tmp/ cache/ $(OSX_APP)
+	rm -rf coverage_percent.txt test_sparks.coverage/ total.coverage/ qa/tmp/ cache/ $(OSX_APP)
