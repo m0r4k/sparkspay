@@ -100,14 +100,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1533816000; // Aug 9th, 2018
 
         //Sparks stuff
-        consensus.nSPKHeight = 99900;
+        consensus.nSPKHeight = 100000;
         consensus.nSPKPremine = 650000;
         consensus.nSPKPostmine = 300000;
         consensus.nSPKSubsidyLegacy = 18;
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 21600;
-        consensus.strCoreAddress = "53ib7ijmLddhCNPsSdQgoLA3CgxGnmDLjV";
-        consensus.strPostmineAddress = "542V6NRR8os6qzfPJ5oNG9Af8GsUtakhXH";
+        consensus.strCoreAddress = "GcwzZzkUnJdbSdexjvSLwdJRg3JXvZGjea";
+        consensus.strPostmineAddress = "GaTuX71DJM5MiJ4QJN3Q9Mhp84ZN6DhNvR";
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.

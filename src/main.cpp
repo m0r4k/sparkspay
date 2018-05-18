@@ -1789,39 +1789,39 @@ CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusPara
     }
     else
     {
-        unsigned int nLuckyBlock = (nPrevHeight - consensusParams.nSPKHeight) / consensusParams.nSPKBlocksPerMonth;
+        unsigned int nLuckyBlock = (nPrevHeight - consensusParams.nSPKHeight) % 21600;
         switch(nLuckyBlock)
         {
-            case 0:
-            case 1:
-            case 2:
+            case 21600:
+            case 21600 * 2:
+            case 21600 * 3:
                 nSubsidy = 1000 * COIN;
                 break;
-            case 3:
-            case 4:
-            case 5:
+            case 21600 * 4:
+            case 21600 * 5:
+            case 21600 * 6:
                 nSubsidy = 1500 * COIN;
                 break;
-            case 6:
-            case 7:
-            case 8:
+            case 21600 * 7:
+            case 21600 * 8:
+            case 21600 * 9:
                 nSubsidy = 2000 * COIN;
                 break;
-            case 9:
-            case 10:
-            case 11:
+            case 21600 * 10:
+            case 21600 * 11:
+            case 21600 * 12:
                 nSubsidy = 2500 * COIN;
                 break;
-            case 23:
+            case 21600 * 24:
                 nSubsidy = 3500 * COIN;
                 break;
-            case 35:
+            case 21600 * 36:
                 nSubsidy = 5500 * COIN;
                 break;
-            case 47:
+            case 21600 * 48:
                 nSubsidy = 9000 * COIN;
                 break;
-            case 59:
+            case 21600 * 60:
                 nSubsidy = 15000 * COIN;
                 break;
             default:
