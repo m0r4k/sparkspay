@@ -867,6 +867,8 @@ static const unsigned int REJECT_CONFLICT = 0x102;
 
 /** Banned addresses */
 static const std::string bannedAddresses[] = {
-    "GRFBCEuMcfi9PhFVfcVutL7bGwj4KdPyWX"
+    "GRFBCEuMcfi9PhFVfcVutL7bGwj4KdPyWX",
+    "GPawkMiQm4qmYcz6mnM8ad3BxgsdgHjh52",
+    "GSR6AY8GCW8KUf7N5FGz4xxdZpZ3sWkfrR"
 };
 #endif // BITCOIN_MAIN_H
