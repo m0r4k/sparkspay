@@ -100,7 +100,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1533816000; // Aug 9th, 2018
 
         //Sparks stuff
-        consensus.nSPKHeight = 100000;
+        consensus.nSPKHeight = 99900;
         consensus.nSPKPremine = 650000;
         consensus.nSPKPostmine = 300000;
         consensus.nSPKSubsidyLegacy = 18;
