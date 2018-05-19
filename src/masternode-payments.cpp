@@ -211,6 +211,7 @@ bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount bloc
 void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward)
 {
     CAmount corePayment = GetCorePayment(nBlockHeight, blockReward);
+    LogPrintf("FillCorePayee height is %d, reward is %d, corePayment is %d\n", nBlockHeight, blockReward, corePayment);
     if(corePayment > 0)
     {
         CBitcoinAddress address;

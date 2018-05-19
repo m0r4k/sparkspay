@@ -1838,13 +1838,16 @@ CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusPara
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
-    CAmount masterNodePayment = blockValue - GetCorePayment(nHeight, blockValue);
-    return masterNodePayment / 2;
+    CAmount corePayment = GetCorePayment(nHeight, blockValue);
+    CAmount masterNodePayment = (blockValue - corePayment) / 2;
+    LogPrintf("GetMasternodePayment: height is %d, blockValue is %d, corePayment is %d, masternodePayment is %d\n", nHeight, blockValue, corePayment, masterNodePayment);
+    return masterNodePayment;
 }
 
 CAmount GetCorePayment(int nHeight, CAmount blockValue)
 {
     const Consensus::Params& consensusParams = Params().GetConsensus();
+    LogPrintf("GetCorePayment: height is %d, consensus height is %d\n", nHeight, consensusParams.nSPKHeight);
     if(nHeight <= consensusParams.nSPKHeight) {
         return 0;
     }else if(nHeight == consensusParams.nSPKHeight + 1) {
@@ -2083,7 +2086,7 @@ bool IsInputBanned(const CTxIn& input, const CCoinsViewCache& mapInputs)
         LogPrintf("IsInputBanned() : Solver returned false\n");
         return true;
     }
-    LogPrintf("IsInputBanned() : whichType = %d\n", whichType);
+    // LogPrintf("IsInputBanned() : whichType = %d\n", whichType);
 
     // Evaluate P2PKH script
     // <sig> <pubkey>
@@ -2109,7 +2112,7 @@ bool IsInputBanned(const CTxIn& input, const CCoinsViewCache& mapInputs)
 
         CBitcoinAddress address;
         address.Set(pubkey.GetID());
-        LogPrintf("IsInputBanned() : sender address is %s\n", address.ToString().c_str());
+        // LogPrintf("IsInputBanned() : sender address is %s\n", address.ToString().c_str());
         // Check address against blacklist
         BOOST_FOREACH(std::string bannedAddress, bannedAddresses)
         {
@@ -2120,7 +2123,6 @@ bool IsInputBanned(const CTxIn& input, const CCoinsViewCache& mapInputs)
             }
         }
     }
-
     // Not banned!
     return false;
 }
