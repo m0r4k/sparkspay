@@ -220,7 +220,7 @@ public:
         consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8"); // FIX
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 5 * 60; // Sparks test: 5 minutes, 10 blocks
-        consensus.nPowTargetSpacing = 0.5 * 60; // Sparks test: 30 seconds
+        consensus.nPowTargetSpacing = 3 * 60; // Sparks test: 3 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
