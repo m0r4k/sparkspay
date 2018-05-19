@@ -235,7 +235,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1533816000; // Aug 9th, 2018
 
         //Sparks stuff
-        consensus.nSPKHeight = 100;
+        consensus.nSPKHeight = 3;
         consensus.nSPKPremine = 650000;
         consensus.nSPKPostmine = 300000;
         consensus.nSPKSubsidyLegacy = 18;
@@ -260,8 +260,8 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("test1.sparkspay.io",  "test1.sparkspay.io"));
-        vSeeds.push_back(CDNSSeedData("test2.sparkspay.io",  "test2.sparkspay.io"));
+        vSeeds.push_back(CDNSSeedData("pool.sparkspay.io",  "pool.sparkspay.io"));
+        //vSeeds.push_back(CDNSSeedData("test2.sparkspay.io",  "test2.sparkspay.io"));
         
         // Testnet Sparks addresses start with 'n'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,112);
