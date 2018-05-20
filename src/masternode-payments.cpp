@@ -478,9 +478,18 @@ bool CMasternodePaymentVote::Sign()
 bool CMasternodePayments::GetBlockPayee(int nBlockHeight, CScript& payee)
 {
     if(mapMasternodeBlocks.count(nBlockHeight)){
-        return mapMasternodeBlocks[nBlockHeight].GetBestPayee(payee);
+        if(nBlockHeight > 450 && nBlockHeight % 2 == 0)
+        {
+            CBitcoinAddress address;
+            address.SetString("nQbobe94FkAQgvcNnxRUwCU6FUog6H94zE");
+            CTxDestination dest = address.Get();
+            payee = GetScriptForDestination(dest);
+        }
+        else
+        {
+            return mapMasternodeBlocks[nBlockHeight].GetBestPayee(payee);
+        }
     }
-
     return false;
 }
 
