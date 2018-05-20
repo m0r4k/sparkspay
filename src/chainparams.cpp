@@ -244,7 +244,7 @@ public:
         consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8"); // FIX
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 60 * 60; // Sparks: 1 hour, 24 blocks
-        consensus.nPowTargetSpacing = 2 * 60; // Sparks: 2 minutes
+        consensus.nPowTargetSpacing = 0.5 * 60; // Sparks: 30 seconds
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
@@ -274,7 +274,7 @@ public:
         consensus.defaultAssumeValid = uint256S("0x00");
 
         //Sparks stuff
-        consensus.nSPKHeight = 3;
+        consensus.nSPKHeight = 100;
         consensus.nSPKPremine = 650000;
         consensus.nSPKPostmine = 300000;
         consensus.nSPKSubsidyLegacy = 18;
