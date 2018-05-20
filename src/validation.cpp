@@ -1280,39 +1280,39 @@ CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusPara
     }
     else
     {
-        unsigned int nLuckyBlock = (nPrevHeight - consensusParams.nSPKHeight) / consensusParams.nSPKBlocksPerMonth;
+        unsigned int nLuckyBlock = nPrevHeight - consensusParams.nSPKHeight;
         switch(nLuckyBlock)
         {
-            case 0:
-            case 1:
-            case 2:
+            case 21600 * 1:
+            case 21600 * 2:
+            case 21600 * 3:
                 nSubsidy = 1000 * COIN;
                 break;
-            case 3:
-            case 4:
-            case 5:
+            case 21600 * 4:
+            case 21600 * 5:
+            case 21600 * 6:
                 nSubsidy = 1500 * COIN;
                 break;
-            case 6:
-            case 7:
-            case 8:
+            case 21600 * 7:
+            case 21600 * 8:
+            case 21600 * 9:
                 nSubsidy = 2000 * COIN;
                 break;
-            case 9:
-            case 10:
-            case 11:
+            case 21600 * 10:
+            case 21600 * 11:
+            case 21600 * 12:
                 nSubsidy = 2500 * COIN;
                 break;
-            case 23:
+            case 21600 * 24:
                 nSubsidy = 3500 * COIN;
                 break;
-            case 35:
+            case 21600 * 36:
                 nSubsidy = 5500 * COIN;
                 break;
-            case 47:
+            case 21600 * 48:
                 nSubsidy = 9000 * COIN;
                 break;
-            case 59:
+            case 21600 * 60:
                 nSubsidy = 15000 * COIN;
                 break;
             default:
@@ -1329,13 +1329,16 @@ CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusPara
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
-    CAmount masterNodePayment = blockValue - GetCorePayment(nHeight, blockValue);
-    return masterNodePayment / 2;
+    CAmount corePayment = GetCorePayment(nHeight, blockValue);
+    CAmount masterNodePayment = (blockValue - corePayment) / 2;
+    LogPrintf("GetMasternodePayment: height is %d, blockValue is %d, corePayment is %d, masternodePayment is %d\n", nHeight, blockValue, corePayment, masterNodePayment);
+    return masterNodePayment;
 }
 
 CAmount GetCorePayment(int nHeight, CAmount blockValue)
 {
     const Consensus::Params& consensusParams = Params().GetConsensus();
+    LogPrintf("GetCorePayment: height is %d, consensus height is %d\n", nHeight, consensusParams.nSPKHeight);
     if(nHeight <= consensusParams.nSPKHeight) {
         return 0;
     }else if(nHeight == consensusParams.nSPKHeight + 1) {
@@ -1524,7 +1527,7 @@ bool IsInputBanned(const CTxIn& input, const CTxOut &prev)
         LogPrintf("IsInputBanned() : Solver returned false\n");
         return true;
     }
-    LogPrintf("IsInputBanned() : whichType = %d\n", whichType);
+    // LogPrintf("IsInputBanned() : whichType = %d\n", whichType);
 
     // Evaluate P2PKH script
     // <sig> <pubkey>
@@ -1550,7 +1553,7 @@ bool IsInputBanned(const CTxIn& input, const CTxOut &prev)
 
         CBitcoinAddress address;
         address.Set(pubkey.GetID());
-        LogPrintf("IsInputBanned() : sender address is %s\n", address.ToString().c_str());
+        // LogPrintf("IsInputBanned() : sender address is %s\n", address.ToString().c_str());
         // Check address against blacklist
         BOOST_FOREACH(std::string bannedAddress, bannedAddresses)
         {
@@ -1561,7 +1564,6 @@ bool IsInputBanned(const CTxIn& input, const CTxOut &prev)
             }
         }
     }
-
     // Not banned!
     return false;
 }

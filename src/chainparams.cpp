@@ -129,8 +129,8 @@ public:
         consensus.nSPKSubsidyLegacy = 18;
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 21600;
-        consensus.strCoreAddress = "53ib7ijmLddhCNPsSdQgoLA3CgxGnmDLjV";
-        consensus.strPostmineAddress = "542V6NRR8os6qzfPJ5oNG9Af8GsUtakhXH";
+        consensus.strCoreAddress = "GcwzZzkUnJdbSdexjvSLwdJRg3JXvZGjea";
+        consensus.strPostmineAddress = "GaTuX71DJM5MiJ4QJN3Q9Mhp84ZN6DhNvR";
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -204,9 +204,11 @@ public:
 	        (  70000, uint256S("0x000000001a835ae450f5fc24dcfbb9a73727eb360055db2e6f004875e9e283ac"))
 	        (  75000, uint256S("0x000000000f7699c372bc333ccfe77e6e4c1dba455534f1683f87afa77f718662"))
 	        (  80000, uint256S("0x00000000382cac8c592da673d1cb3eece9747a725dc8d40420ec8c54d70353ca"))
-	        (  85000, uint256S("0x00000000172eb33e1d197a00cc470dc823c64ff35ad9d28446858084fcf7acb2")),
-	        1524778707, // * UNIX timestamp of last checkpoint block
-            117514,    // * total number of transactions between genesis and last checkpoint
+            (  85000, uint256S("0x00000000172eb33e1d197a00cc470dc823c64ff35ad9d28446858084fcf7acb2"))
+            (  90000, uint256S("0x0000000013a3c3b48c07adddcccf3c81dc07e47357cec312434bff9426ceb606"))
+            (  95000, uint256S("0x000000000bdf998343263166fa2d862f671c96161433630e1bc2d911e01e646e")),
+            1526049903, // * UNIX timestamp of last checkpoint block
+            129491,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2800        // * estimated number of transactions per day after checkpoint
         };
