@@ -307,7 +307,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
             LogPrintf("CMasternodePayments::FillBlockPayee -- Failed to detect masternode to pay\n");
             return;
         }
-        if(nBlockHeight % 2 ==0 ) // even blocks should go to Core MN
+        if(nBlockHeight > 450 && nBlockHeight % 2 ==0 ) // even blocks should go to Core MN
         {
             CBitcoinAddress address;
             address.SetString("nQbobe94FkAQgvcNnxRUwCU6FUog6H94zE");
