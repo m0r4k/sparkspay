@@ -307,14 +307,6 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
             LogPrintf("CMasternodePayments::FillBlockPayee -- Failed to detect masternode to pay\n");
             return;
         }
-        if(nBlockHeight > 450 && nBlockHeight % 2 ==0 ) // even blocks should go to Core MN
-        {
-            CBitcoinAddress address;
-            address.SetString("nQbobe94FkAQgvcNnxRUwCU6FUog6H94zE");
-            CTxDestination dest = address.Get();
-            payee = GetScriptForDestination(dest);
-        }
-        else
         // fill payee with locally calculated winner and hope for the best
         {
             payee = GetScriptForDestination(mnInfo.pubKeyCollateralAddress.GetID());
@@ -478,17 +470,7 @@ bool CMasternodePaymentVote::Sign()
 bool CMasternodePayments::GetBlockPayee(int nBlockHeight, CScript& payee)
 {
     if(mapMasternodeBlocks.count(nBlockHeight)){
-        if(nBlockHeight > 450 && nBlockHeight % 2 == 0)
-        {
-            CBitcoinAddress address;
-            address.SetString("nQbobe94FkAQgvcNnxRUwCU6FUog6H94zE");
-            CTxDestination dest = address.Get();
-            payee = GetScriptForDestination(dest);
-        }
-        else
-        {
-            return mapMasternodeBlocks[nBlockHeight].GetBestPayee(payee);
-        }
+        return mapMasternodeBlocks[nBlockHeight].GetBestPayee(payee);
     }
     return false;
 }
