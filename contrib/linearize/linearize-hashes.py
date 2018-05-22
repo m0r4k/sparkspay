@@ -36,7 +36,7 @@ class BitcoinRPC:
 
 	def execute(self, obj):
 		try:
-		self.conn.request('POST', '/', json.dumps(obj),
+			self.conn.request('POST', '/', json.dumps(obj),
 			{ 'Authorization' : self.authhdr,
 			  'Content-type' : 'application/json' })
 		except ConnectionRefusedError:
