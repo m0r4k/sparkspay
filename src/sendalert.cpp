@@ -49,7 +49,7 @@ void ThreadSendAlert(CConnman& connman)
 
     // These versions are protocol versions
     alert.nMinVer       = 70000;
-    alert.nMaxVer       = 70103;
+    alert.nMaxVer       = 70208;
 
     //
     //  1000 for Misc warnings like out of disk space and clock is wrong
@@ -57,10 +57,10 @@ void ThreadSendAlert(CConnman& connman)
     //  Higher numbers mean higher priority
     alert.nPriority     = 5000;
     alert.strComment    = "";
-    alert.strStatusBar  = "URGENT: Upgrade required: see https://www.sparks.org";
+    alert.strStatusBar  = "URGENT: Upgrade required: see https://www.sparkscoin.io";
 
     // Set specific client version/versions here. If setSubVer is empty, no filtering on subver is done:
-    // alert.setSubVer.insert(std::string("/Sparks Core:0.12.0.58/"));
+    // alert.setSubVer.insert(std::string("/Sparks Core:0.12.2.5/"));
 
     // Sign
     if(!alert.Sign())

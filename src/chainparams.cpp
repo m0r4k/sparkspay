@@ -141,7 +141,7 @@ public:
         pchMessageStart[1] = 0xb2;
         pchMessageStart[2] = 0xc3;
         pchMessageStart[3] = 0xd4;
-        vAlertPubKey = ParseHex("048921904b04531ad4ad5127d34f1a1a88c605537a04ad046fd339b0d75b7c4764ed6221df09901fa75e9905265b2b05e9d42b10995aac3fff9d2e6b32c729dcbf");
+        vAlertPubKey = ParseHex("0343783664fe0a0f884ceff5fe128e674d8c050cfd5bd66d262a7d4e1a546e30c3");
         nDefaultPort = 8890;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nDelayGetHeadersTime = 24 * 60 * 60;
@@ -180,8 +180,8 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
-        strSporkPubKey = "0415c266a2a3998294b9c0a8e76fee8e1e2dfd951126ea96fb33a9c5011647bfc6a2bfa075e27ab56eeb752bbf13d42ca3dd0d406ef2edb49a98f99130b94a1ddf";
 
+        strSporkPubKey = "03053174848a69d72c1ec8b59da80e912827745d8c0d8946f314203a7ade9c037e";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
@@ -206,9 +206,11 @@ public:
 	        (  80000, uint256S("0x00000000382cac8c592da673d1cb3eece9747a725dc8d40420ec8c54d70353ca"))
             (  85000, uint256S("0x00000000172eb33e1d197a00cc470dc823c64ff35ad9d28446858084fcf7acb2"))
             (  90000, uint256S("0x0000000013a3c3b48c07adddcccf3c81dc07e47357cec312434bff9426ceb606"))
-            (  95000, uint256S("0x000000000bdf998343263166fa2d862f671c96161433630e1bc2d911e01e646e")),
-            1526049903, // * UNIX timestamp of last checkpoint block
-            129491,    // * total number of transactions between genesis and last checkpoint
+            (  95000, uint256S("0x000000000bdf998343263166fa2d862f671c96161433630e1bc2d911e01e646e"))
+            ( 100000, uint256S("0x0000000006fbc78ab84d3ddf4246d128b36c5240060cfc5ce9bb989a775bf970"))
+            ( 105000, uint256S("0x00000000083d9c4a12584c77b4a71fe4dcbd3545974971b34f83bca1e1af9d6b")),
+            1527316460, // * UNIX timestamp of last checkpoint block
+            143081,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2800        // * estimated number of transactions per day after checkpoint
         };
@@ -287,7 +289,7 @@ public:
         pchMessageStart[1] = 0x2b;
         pchMessageStart[2] = 0xb3;
         pchMessageStart[3] = 0x7a;
-        vAlertPubKey = ParseHex("04b92daeadd3341d4cf8b0ff0b6d1651dc9b090f51a99cb3cfb361bf167118fea1697587c92ca28f237c79ef680383d70f8f2a344741235fb5e5874774b98a2575");
+        vAlertPubKey = ParseHex("0244a0f8bd00f5497419d38623be157d80d42a83f7ed95b36387461515276b31bd");
         nDefaultPort = 8891;
         nMaxTipAge = 0x7fffffff; // allow mining on top of old blocks for testnet
         nDelayGetHeadersTime = 24 * 60 * 60;
@@ -326,8 +328,7 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
-        strSporkPubKey = "04e9afe808e9248dc438366c3427e2770c999d3c2e87a68b15f03dfe440e6939293c3cbc72aa6232a279fbc3c4c3570337ccb0f81fc087efcf5dec5b01dedfecae";
-
+        strSporkPubKey = "03556beefd702162910a0b765cb4f0635cf6b8754645e8e900221aa72d7ca9027f";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
