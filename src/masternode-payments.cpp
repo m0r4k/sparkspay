@@ -207,32 +207,6 @@ bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount bloc
     return true;
 }
 
-void FillCorePayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward)
-{
-    CAmount corePayment = GetCorePayment(nBlockHeight, blockReward);
-    LogPrintf("FillCorePayee height is %d, reward is %d, corePayment is %d\n", nBlockHeight, blockReward, corePayment);
-    if(corePayment > 0)
-    {
-        CBitcoinAddress address;
-        const Consensus::Params& consensusParams = Params().GetConsensus();
-        if(nBlockHeight == consensusParams.nSPKHeight + 1) { // postmine block
-            address.SetString(consensusParams.strPostmineAddress);
-            LogPrintf("FillCorePayee -- Postmine to Core address %s\n", address.ToString());
-        }
-        else{
-            address.SetString(consensusParams.strCoreAddress);
-        }
-        CTxDestination dest = address.Get();
-        CScript payee = GetScriptForDestination(dest);
-        // split reward between miner ...
-        txNew.vout[0].nValue -= corePayment;
-        // ... and Core
-        CTxOut txoutCore(corePayment, payee);
-        txNew.vout.push_back(txoutCore);
-        LogPrintf("FillCorePayee -- Core payment %lld to %s for block %d reward %lld\n", corePayment, address.ToString(), nBlockHeight, blockReward);
-    }
-}
-
 void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet, std::vector<CTxOut>& voutSuperblockRet)
 {
     // only create superblocks if spork is enabled AND if superblock is actually triggered
@@ -291,9 +265,6 @@ bool CMasternodePayments::CanVote(COutPoint outMasternode, int nBlockHeight)
 
 void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet)
 {
-    // ... and Core
-    FillCorePayee(txNew, nBlockHeight, blockReward);
-
     // make sure it's not filled yet
     txoutMasternodeRet = CTxOut();
 

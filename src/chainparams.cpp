@@ -111,16 +111,16 @@ public:
 
         // Deployment of DIP0001
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = 1508025600; // Oct 15th, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nTimeout = 1539561600; // Oct 15th, 2018
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nWindowSize = 4032;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 3226; // 80% of 4032
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = 1528502400; // June 9th, 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nTimeout = 1560556800; // June 15th, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nWindowSize = 1000;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 600;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000dabcdc6fa151a6");//block 103927
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000dd1c0423e5cce0");//115000
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000000004bdd236d6173854c2fb9d2ef052ed2768257b786a23285663d06d58");//block 103927
+        consensus.defaultAssumeValid = uint256S("0x000000000c77a0d520021ae7e706b706d257b6ff63b8d2818269a6a0ff926f25"); //115000
 
         //Sparks stuff
         consensus.nSPKHeight = 100000;
@@ -130,7 +130,10 @@ public:
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 21600;
         consensus.strCoreAddress = "GcwzZzkUnJdbSdexjvSLwdJRg3JXvZGjea";
-        consensus.strPostmineAddress = "GaTuX71DJM5MiJ4QJN3Q9Mhp84ZN6DhNvR";
+        consensus.fSPKRatioMN = 0.7;
+        consensus.vBannedAddresses.push_back("GRFBCEuMcfi9PhFVfcVutL7bGwj4KdPyWX");
+        consensus.vBannedAddresses.push_back("GPawkMiQm4qmYcz6mnM8ad3BxgsdgHjh52");
+        consensus.vBannedAddresses.push_back("GSR6AY8GCW8KUf7N5FGz4xxdZpZ3sWkfrR");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -208,9 +211,11 @@ public:
             (  90000, uint256S("0x0000000013a3c3b48c07adddcccf3c81dc07e47357cec312434bff9426ceb606"))
             (  95000, uint256S("0x000000000bdf998343263166fa2d862f671c96161433630e1bc2d911e01e646e"))
             ( 100000, uint256S("0x0000000006fbc78ab84d3ddf4246d128b36c5240060cfc5ce9bb989a775bf970"))
-            ( 105000, uint256S("0x00000000083d9c4a12584c77b4a71fe4dcbd3545974971b34f83bca1e1af9d6b")),
-            1527316460, // * UNIX timestamp of last checkpoint block
-            143081,    // * total number of transactions between genesis and last checkpoint
+            ( 105000, uint256S("0x00000000083d9c4a12584c77b4a71fe4dcbd3545974971b34f83bca1e1af9d6b"))
+            ( 110000, uint256S("0x00000000123d606ceb21089d7564913ac9e1ac012dc411a5de2e26b5288d4ae6"))
+            ( 115000, uint256S("0x000000000c77a0d520021ae7e706b706d257b6ff63b8d2818269a6a0ff926f25")),
+            1528578608, // * UNIX timestamp of last checkpoint block
+            158933,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2800        // * estimated number of transactions per day after checkpoint
         };
@@ -245,7 +250,7 @@ public:
         consensus.BIP34Height = 21111; // FIX
         consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8"); // FIX
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
-        consensus.nPowTargetTimespan = 60 * 60; // Sparks: 1 hour, 24 blocks
+        consensus.nPowTargetTimespan = 5 * 60; // Sparks: 5 minutes, 10 blocks
         consensus.nPowTargetSpacing = 0.5 * 60; // Sparks: 30 seconds
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
@@ -264,16 +269,16 @@ public:
 
         // Deployment of DIP0001
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = 1505692800; // Sep 18th, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nTimeout = 1537228800; // Sep 18th, 2018
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nWindowSize = 100;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 50; // 50% of 100
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = 1528502400; // June 9th, 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nTimeout = 1560556800; // June 15th, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nWindowSize = 9;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 7; // 7/9 MNs
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00");
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000ce0010a");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00");
+        consensus.defaultAssumeValid = uint256S("0x00000b625d0b8e0c182b38bc94427b874a1c9001d78c330bf34bb07044cbe934");
 
         //Sparks stuff
         consensus.nSPKHeight = 100;
@@ -282,8 +287,8 @@ public:
         consensus.nSPKSubsidyLegacy = 18;
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 1;
-        consensus.strCoreAddress = "944ZZRFxKxoUdqvEaFQqukPzGFzPwdamFz";
-        consensus.strPostmineAddress = "98yMNBEHFoxvUGDQhc25yLh4AwBpqarA18";
+        consensus.strCoreAddress = "n7ntRMZ83MKzu9Krwp9W5rKGeTBRyVrVjc";
+        consensus.fSPKRatioMN = 0.7;
 
         pchMessageStart[0] = 0xd1;
         pchMessageStart[1] = 0x2b;
@@ -302,7 +307,7 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("pool.sparkspay.io",  "pool.sparkspay.io"));
+        vSeeds.push_back(CDNSSeedData("test1.sparkspay.io",  "test1.sparkspay.io"));
 
         // Testnet Sparks addresses start with 'n'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,112);
@@ -402,7 +407,6 @@ public:
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 1;
         consensus.strCoreAddress = "944ZZRFxKxoUdqvEaFQqukPzGFzPwdamFz";
-        consensus.strPostmineAddress = "98yMNBEHFoxvUGDQhc25yLh4AwBpqarA18";
 
         pchMessageStart[0] = 0xa1;
         pchMessageStart[1] = 0xb3;

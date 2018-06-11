@@ -71,7 +71,8 @@ struct Params {
     unsigned int nSPKSubidyReborn;
     unsigned int nSPKBlocksPerMonth;
     std::string strCoreAddress;
-    std::string strPostmineAddress;
+    std::vector<std::string> vBannedAddresses;
+    float fSPKRatioMN;
     /**
      * Minimum blocks including miner confirmation of the total of nMinerConfirmationWindow blocks in a retargetting period,
      * (nPowTargetTimespan / nPowTargetSpacing) which is also used for BIP9 deployments.

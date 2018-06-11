@@ -1329,10 +1329,21 @@ CAmount GetRebornSubsidy(int nPrevHeight, const Consensus::Params& consensusPara
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
-    CAmount corePayment = GetCorePayment(nHeight, blockValue);
-    CAmount masterNodePayment = (blockValue - corePayment) / 2;
-    LogPrintf("GetMasternodePayment: height is %d, blockValue is %d, corePayment is %d, masternodePayment is %d\n", nHeight, blockValue, corePayment, masterNodePayment);
-    return masterNodePayment;
+    const Consensus::Params& consensusParams = Params().GetConsensus();
+    bool fDIP0001Active = (VersionBitsState(chainActive.Tip(), consensusParams, Consensus::DEPLOYMENT_DIP0001, versionbitscache) == THRESHOLD_ACTIVE);
+    if(!fDIP0001Active)
+    {
+        CAmount corePayment = GetCorePayment(nHeight, blockValue);
+        CAmount masterNodePayment = (blockValue - corePayment) / 2;
+        LogPrintf("GetMasternodePayment: height is %d, blockValue is %d, corePayment is %d, masternodePayment is %d\n", nHeight, blockValue, corePayment, masterNodePayment);
+        return masterNodePayment;
+    }
+    else
+    {
+        CAmount masterNodePayment = blockValue * consensusParams.fSPKRatioMN;
+        LogPrintf("GetMasternodePayment: DIP0001 active, height is %d, blockValue is %d, masternodePayment is %d\n", nHeight, blockValue, masterNodePayment);
+        return masterNodePayment;
+    }
 }
 
 CAmount GetCorePayment(int nHeight, CAmount blockValue)
@@ -1515,7 +1526,7 @@ int GetSpendHeight(const CCoinsViewCache& inputs)
 }
 
 namespace Consensus {
-bool IsInputBanned(const CTxIn& input, const CTxOut &prev)
+bool IsInputBanned(const Params& consensusParams, const CTxIn& input, const CTxOut &prev)
 {
     // Determine script type
     const CScript& prevScript = prev.scriptPubKey;
@@ -1555,7 +1566,7 @@ bool IsInputBanned(const CTxIn& input, const CTxOut &prev)
         address.Set(pubkey.GetID());
         // LogPrintf("IsInputBanned() : sender address is %s\n", address.ToString().c_str());
         // Check address against blacklist
-        BOOST_FOREACH(std::string bannedAddress, bannedAddresses)
+        BOOST_FOREACH(std::string bannedAddress, consensusParams.vBannedAddresses)
         {
             if (address.Get() == CBitcoinAddress(bannedAddress).Get())
             {
@@ -1577,7 +1588,7 @@ bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoins
 
         CAmount nValueIn = 0;
         CAmount nFees = 0;
-        const CChainParams& chainparams = ::Params();
+        const Consensus::Params& consensusParams = ::Params().GetConsensus();
 
         for (unsigned int i = 0; i < tx.vin.size(); i++)
         {
@@ -1598,7 +1609,7 @@ bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoins
             if (!MoneyRange(coin.out.nValue) || !MoneyRange(nValueIn))
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-inputvalues-outofrange");
             // Check for banned inputs
-            if (nSpendHeight >= chainparams.GetConsensus().nSPKHeight && IsInputBanned(tx.vin[i], coin.out))
+            if (nSpendHeight >= consensusParams.nSPKHeight && IsInputBanned(consensusParams, tx.vin[i], coin.out))
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-in-banned");
         }
 

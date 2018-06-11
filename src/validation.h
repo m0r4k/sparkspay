@@ -504,11 +504,4 @@ static const unsigned int REJECT_HIGHFEE = 0x100;
 static const unsigned int REJECT_ALREADY_KNOWN = 0x101;
 /** Transaction conflicts with a transaction already known */
 static const unsigned int REJECT_CONFLICT = 0x102;
-
-/** Banned addresses */
-static const std::string bannedAddresses[] = {
-    "GRFBCEuMcfi9PhFVfcVutL7bGwj4KdPyWX",
-    "GPawkMiQm4qmYcz6mnM8ad3BxgsdgHjh52",
-    "GSR6AY8GCW8KUf7N5FGz4xxdZpZ3sWkfrR"
-};
 #endif // BITCOIN_VALIDATION_H
