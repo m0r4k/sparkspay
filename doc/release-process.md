@@ -1,23 +1,23 @@
 Release Process
 ====================
 
-* Update translations, see [translation_process.md](https://github.com/Sparkscoin/Sparks/blob/master/doc/translation_process.md#syncing-with-transifex)
+* Update translations, see [translation_process.md](https://github.com/sparkspay/sparks/blob/master/doc/translation_process.md#syncing-with-transifex)
 * Update hardcoded [seeds](/contrib/seeds)
 
 * * *
 
-###First time / New builders
+### First time / New builders
 Check out the source code in the following directory hierarchy.
 
 	cd /path/to/your/toplevel/build
-	git clone https://github.com/Sparkscoin/gitian.sigs.git
-	git clone https://github.com/Sparkscoin/Sparks-detached-sigs.git
+	git clone https://github.com/sparkspay/gitian.sigs.git
+	git clone https://github.com/sparkspay/sparks-detached-sigs.git
 	git clone https://github.com/devrandom/gitian-builder.git
-	git clone https://github.com/Sparkscoin/Sparks.git
+	git clone https://github.com/sparkspay/sparks.git
 
-###Sparks Core maintainers/release engineers, update (commit) version in sources
+### Sparks Core maintainers/release engineers, update (commit) version in sources
 
-	pushd ./Sparks
+	pushd ./sparks
 	contrib/verifysfbinaries/verify.sh
 	configure.ac
 	doc/README*
@@ -36,11 +36,11 @@ Check out the source code in the following directory hierarchy.
 
 * * *
 
-###Setup and perform Gitian builds
+### Setup and perform Gitian builds
 
  Setup Gitian descriptors:
 
-	pushd ./Sparks
+	pushd ./sparks
 	export SIGNER=(your Gitian key, ie bluematt, sipa, etc)
 	export VERSION=(new version, e.g. 0.8.0)
 	git fetch
@@ -58,7 +58,7 @@ Check out the source code in the following directory hierarchy.
 	pushd ./gitian-builder
 	git pull
 
-###Fetch and create inputs: (first time, or when dependency versions change)
+### Fetch and create inputs: (first time, or when dependency versions change)
 
 	mkdir -p inputs
 	wget -P inputs https://bitcoincore.org/cfields/osslsigncode-Backports-to-1.7.1.patch
@@ -72,60 +72,60 @@ Check out the source code in the following directory hierarchy.
 
 	tar -C /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/ -czf MacOSX10.9.sdk.tar.gz MacOSX10.9.sdk
 
-###Optional: Seed the Gitian sources cache and offline git repositories
+### Optional: Seed the Gitian sources cache and offline git repositories
 
 By default, Gitian will fetch source files as needed. To cache them ahead of time:
 
-	make -C ../Sparks/depends download SOURCES_PATH=`pwd`/cache/common
+	make -C ../sparks/depends download SOURCES_PATH=`pwd`/cache/common
 
 Only missing files will be fetched, so this is safe to re-run for each build.
 
 NOTE: Offline builds must use the --url flag to ensure Gitian fetches only from local URLs. For example:
 ```
-./bin/gbuild --url Sparks=/path/to/Sparks,signature=/path/to/sigs {rest of arguments}
+./bin/gbuild --url sparks=/path/to/sparks,signature=/path/to/sigs {rest of arguments}
 ```
 The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 
-###Build and sign Sparks Core for Linux, Windows, and OS X:
+### Build and sign Sparks Core for Linux, Windows, and OS X:
 
-	./bin/gbuild --commit Sparks=v${VERSION} ../Sparks/contrib/gitian-descriptors/gitian-linux.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../Sparks/contrib/gitian-descriptors/gitian-linux.yml
-	mv build/out/Sparks-*.tar.gz build/out/src/Sparks-*.tar.gz ../
+	./bin/gbuild --commit sparks=v${VERSION} ../sparks/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../sparks/contrib/gitian-descriptors/gitian-linux.yml
+	mv build/out/sparks-*.tar.gz build/out/src/sparks-*.tar.gz ../
 
-	./bin/gbuild --commit Sparks=v${VERSION} ../Sparks/contrib/gitian-descriptors/gitian-win.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../Sparks/contrib/gitian-descriptors/gitian-win.yml
-	mv build/out/Sparks-*-win-unsigned.tar.gz inputs/Sparks-win-unsigned.tar.gz
-	mv build/out/Sparks-*.zip build/out/Sparks-*.exe ../
+	./bin/gbuild --commit sparks=v${VERSION} ../sparks/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../sparks/contrib/gitian-descriptors/gitian-win.yml
+	mv build/out/sparks-*-win-unsigned.tar.gz inputs/sparks-win-unsigned.tar.gz
+	mv build/out/sparks-*.zip build/out/sparks-*.exe ../
 
-	./bin/gbuild --commit Sparks=v${VERSION} ../Sparks/contrib/gitian-descriptors/gitian-osx.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../Sparks/contrib/gitian-descriptors/gitian-osx.yml
-	mv build/out/Sparks-*-osx-unsigned.tar.gz inputs/Sparks-osx-unsigned.tar.gz
-	mv build/out/Sparks-*.tar.gz build/out/Sparks-*.dmg ../
+	./bin/gbuild --commit sparks=v${VERSION} ../sparks/contrib/gitian-descriptors/gitian-osx.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../sparks/contrib/gitian-descriptors/gitian-osx.yml
+	mv build/out/sparks-*-osx-unsigned.tar.gz inputs/sparks-osx-unsigned.tar.gz
+	mv build/out/sparks-*.tar.gz build/out/sparks-*.dmg ../
 	popd
 
   Build output expected:
 
-  1. source tarball (Sparks-${VERSION}.tar.gz)
-  2. linux 32-bit and 64-bit dist tarballs (Sparks-${VERSION}-linux[32|64].tar.gz)
-  3. windows 32-bit and 64-bit unsigned installers and dist zips (Sparks-${VERSION}-win[32|64]-setup-unsigned.exe, Sparks-${VERSION}-win[32|64].zip)
-  4. OS X unsigned installer and dist tarball (Sparks-${VERSION}-osx-unsigned.dmg, Sparks-${VERSION}-osx64.tar.gz)
+  1. source tarball (sparks-${VERSION}.tar.gz)
+  2. linux 32-bit and 64-bit dist tarballs (sparks-${VERSION}-linux[32|64].tar.gz)
+  3. windows 32-bit and 64-bit unsigned installers and dist zips (sparks-${VERSION}-win[32|64]-setup-unsigned.exe, sparks-${VERSION}-win[32|64].zip)
+  4. OS X unsigned installer and dist tarball (sparks-${VERSION}-osx-unsigned.dmg, sparks-${VERSION}-osx64.tar.gz)
   5. Gitian signatures (in gitian.sigs/${VERSION}-<linux|{win,osx}-unsigned>/(your Gitian key)/
 
-###Verify other gitian builders signatures to your own. (Optional)
+### Verify other gitian builders signatures to your own. (Optional)
 
   Add other gitian builders keys to your gpg keyring
 
-	gpg --import ../Sparks/contrib/gitian-downloader/*.pgp
+	gpg --import ../sparks/contrib/gitian-downloader/*.pgp
 
   Verify the signatures
 
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../Sparks/contrib/gitian-descriptors/gitian-linux.yml
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../Sparks/contrib/gitian-descriptors/gitian-win.yml
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../Sparks/contrib/gitian-descriptors/gitian-osx.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../sparks/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../sparks/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../sparks/contrib/gitian-descriptors/gitian-osx.yml
 
 	popd
 
-###Next steps:
+### Next steps:
 
 Commit your signature to gitian.sigs:
 
@@ -139,25 +139,25 @@ Commit your signature to gitian.sigs:
 
   Wait for Windows/OS X detached signatures:
 	Once the Windows/OS X builds each have 3 matching signatures, they will be signed with their respective release keys.
-	Detached signatures will then be committed to the [Sparks-detached-sigs](https://github.com/Sparkscoin/Sparks-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
+	Detached signatures will then be committed to the [sparks-detached-sigs](https://github.com/sparkspay/sparks-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
   Create (and optionally verify) the signed OS X binary:
 
 	pushd ./gitian-builder
-	./bin/gbuild -i --commit signature=v${VERSION} ../Sparks/contrib/gitian-descriptors/gitian-osx-signer.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../Sparks/contrib/gitian-descriptors/gitian-osx-signer.yml
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../Sparks/contrib/gitian-descriptors/gitian-osx-signer.yml
-	mv build/out/Sparks-osx-signed.dmg ../Sparks-${VERSION}-osx.dmg
+	./bin/gbuild -i --commit signature=v${VERSION} ../sparks/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../sparks/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../sparks/contrib/gitian-descriptors/gitian-osx-signer.yml
+	mv build/out/sparks-osx-signed.dmg ../sparks-${VERSION}-osx.dmg
 	popd
 
   Create (and optionally verify) the signed Windows binaries:
 
 	pushd ./gitian-builder
-	./bin/gbuild -i --commit signature=v${VERSION} ../Sparks/contrib/gitian-descriptors/gitian-win-signer.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../Sparks/contrib/gitian-descriptors/gitian-win-signer.yml
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../Sparks/contrib/gitian-descriptors/gitian-win-signer.yml
-	mv build/out/Sparks-*win64-setup.exe ../Sparks-${VERSION}-win64-setup.exe
-	mv build/out/Sparks-*win32-setup.exe ../Sparks-${VERSION}-win32-setup.exe
+	./bin/gbuild -i --commit signature=v${VERSION} ../sparks/contrib/gitian-descriptors/gitian-win-signer.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../sparks/contrib/gitian-descriptors/gitian-win-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../sparks/contrib/gitian-descriptors/gitian-win-signer.yml
+	mv build/out/sparks-*win64-setup.exe ../sparks-${VERSION}-win64-setup.exe
+	mv build/out/sparks-*win32-setup.exe ../sparks-${VERSION}-win32-setup.exe
 	popd
 
 Commit your signature for the signed OS X/Windows binaries:
@@ -182,21 +182,21 @@ rm SHA256SUMS
 (the digest algorithm is forced to sha256 to avoid confusion of the `Hash:` header that GPG adds with the SHA256 used for the files)
 Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spurious/nonsensical entry.
 
-- Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the Sparks.org server
+- Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the sparks.org server
 
-- Update Sparks.org
+- Update sparks.org
 
 - Announce the release:
 
-  - Release on Sparks forum: https://www.Sparks.org/forum/topic/official-announcements.54/
+  - Release on Sparks forum: https://www.sparks.org/forum/topic/official-announcements.54/
 
   - Sparks-development mailing list
 
-  - Update title of #Sparkscoin on Freenode IRC
+  - Update title of #sparkspay on Freenode IRC
 
   - Optionally reddit /r/Sparkspay, ... but this will usually sort out itself
 
-- Notify flare so that he can start building [the PPAs](https://launchpad.net/~Sparks.org/+archive/ubuntu/Sparks)
+- Notify flare so that he can start building [the PPAs](https://launchpad.net/~sparks.org/+archive/ubuntu/sparks)
 
 - Add release notes for the new version to the directory `doc/release-notes` in git master
 

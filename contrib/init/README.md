@@ -1,11 +1,11 @@
 Sample configuration files for:
 
-SystemD: Sparksd.service
-Upstart: Sparksd.conf
-OpenRC:  Sparksd.openrc
-         Sparksd.openrcconf
-CentOS:  Sparksd.init
-OS X:    org.Sparks.Sparksd.plist
+SystemD: sparksd.service
+Upstart: sparksd.conf
+OpenRC:  sparksd.openrc
+         sparksd.openrcconf
+CentOS:  sparksd.init
+OS X:    org.sparks.sparksd.plist
 
 have been made available to assist packagers in creating node packages here.
 

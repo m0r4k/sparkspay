@@ -1,6 +1,6 @@
 all:
-	$(MAKE) -C .. Sparks_test
+	$(MAKE) -C .. sparks_test
 clean:
-	$(MAKE) -C .. Sparks_test_clean
+	$(MAKE) -C .. sparks_test_clean
 check:
-	$(MAKE) -C .. Sparks_test_check
+	$(MAKE) -C .. sparks_test_check

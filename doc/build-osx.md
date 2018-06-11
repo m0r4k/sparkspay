@@ -1,6 +1,6 @@
 Mac OS X Build Instructions and Notes
 ====================================
-This guide will show you how to build Sparksd (headless client) for OSX.
+This guide will show you how to build sparksd (headless client) for OSX.
 
 Notes
 -----
@@ -32,20 +32,19 @@ Instructions: Homebrew
 
 #### Install dependencies using Homebrew
 
-    brew install autoconf automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf libevent
+    brew install autoconf automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf libevent qt
 
-NOTE: Building with Qt4 is still supported, however, could result in a broken UI. As such, building with Qt5 is recommended. Qt5 5.7 requires C++11 which Sparks Core doesn't fully support yet, Qt5 5.6.2 has some other issues, so make sure to install Qt version < 5.6.2 (5.6.1-1 is recommended).
-    brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/e6d954bab88e89c5582498157077756900865070/Formula/qt5.rb
+NOTE: Building with Qt4 is still supported, however, doing so could result in a broken UI. Therefore, building with Qt5 is recommended. Be aware that Qt5 5.7+ requires C++11 compiler support.
 
 ### Building Sparks Core
 
 1. Clone the GitHub tree to get the source code and go into the directory.
 
-        git clone https://github.com/Sparkscoin/Sparks.git
-        cd Sparks
+        git clone https://github.com/sparkspay/sparks.git
+        cd sparks
 
 2.  Build Sparks Core:
-    This will configure and build the headless Sparks binaries as well as the gui (if Qt is found).
+    This will configure and build the headless sparks binaries as well as the gui (if Qt is found).
     You can disable the gui build by passing `--without-gui` to configure.
 
         ./autogen.sh
@@ -56,7 +55,7 @@ NOTE: Building with Qt4 is still supported, however, could result in a broken UI
 
         make check
 
-4.  (Optional) You can also install Sparksd to your path:
+4.  (Optional) You can also install sparksd to your path:
 
         make install
 
@@ -68,7 +67,7 @@ Download Qt Creator from https://www.qt.io/download/. Download the "community ed
 1. Make sure you installed everything through Homebrew mentioned above
 2. Do a proper ./configure --enable-debug
 3. In Qt Creator do "New Project" -> Import Project -> Import Existing Project
-4. Enter "Sparks-qt" as project name, enter src/qt as location
+4. Enter "sparks-qt" as project name, enter src/qt as location
 5. Leave the file selection as it is
 6. Confirm the "summary page"
 7. In the "Projects" tab select "Manage Kits..."
@@ -78,11 +77,11 @@ Download Qt Creator from https://www.qt.io/download/. Download the "community ed
 
 Creating a release build
 ------------------------
-You can ignore this section if you are building `Sparksd` for your own use.
+You can ignore this section if you are building `sparksd` for your own use.
 
-Sparksd/Sparks-cli binaries are not included in the Sparks-Qt.app bundle.
+sparksd/sparks-cli binaries are not included in the Sparks-Qt.app bundle.
 
-If you are building `Sparksd` or `Sparks Core` for others, your build machine should be set up
+If you are building `sparksd` or `Sparks Core` for others, your build machine should be set up
 as follows for maximum compatibility:
 
 All dependencies should be compiled with these flags:
@@ -97,14 +96,14 @@ bundle is packaged and signed to create the .dmg disk image that is distributed.
 Running
 -------
 
-It's now available at `./Sparksd`, provided that you are still in the `src`
+It's now available at `./sparksd`, provided that you are still in the `src`
 directory. We have to first create the RPC configuration file, though.
 
-Run `./Sparksd` to get the filename where it should be put, or just try these
+Run `./sparksd` to get the filename where it should be put, or just try these
 commands:
 
-    echo -e "rpcuser=Sparksrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/SparksCore/Sparks.conf"
-    chmod 600 "/Users/${USER}/Library/Application Support/SparksCore/Sparks.conf"
+    echo -e "rpcuser=sparksrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/SparksCore/sparks.conf"
+    chmod 600 "/Users/${USER}/Library/Application Support/SparksCore/sparks.conf"
 
 The next time you run it, it will start downloading the blockchain, but it won't
 output anything while it's doing this. This process may take several hours;
@@ -115,6 +114,6 @@ you can monitor its process by looking at the debug.log file, like this:
 Other commands:
 -------
 
-    ./Sparksd -daemon # to start the Sparks daemon.
-    ./Sparks-cli --help  # for a list of command-line options.
-    ./Sparks-cli help    # When the daemon is running, to get a list of RPC commands
+    ./sparksd -daemon # to start the sparks daemon.
+    ./sparks-cli --help  # for a list of command-line options.
+    ./sparks-cli help    # When the daemon is running, to get a list of RPC commands

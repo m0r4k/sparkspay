@@ -1,18 +1,22 @@
-Discord channel: https://discord.gg/TaYsEsX
-
 Sparks Core staging tree 0.12.2
 ===============================
 
-`master:` [![Build Status](https://travis-ci.org/Sparkscoin/Sparks.svg?branch=master)](https://travis-ci.org/Sparkscoin/Sparks) `v0.12.0.x:` [![Build Status](https://travis-ci.org/Sparkscoin/Sparks.svg?branch=v0.12.0.x)](https://travis-ci.org/Sparkscoin/Sparks/branches) `v0.12.1.x:` [![Build Status](https://travis-ci.org/Sparkscoin/Sparks.svg?branch=v0.12.1.x)](https://travis-ci.org/Sparkscoin/Sparks/branches)
+`master:` [![Build Status](https://travis-ci.org/sparkspay/sparks.svg?branch=master)](https://travis-ci.org/sparkspay/sparks) `develop:` [![Build Status](https://travis-ci.org/sparkspay/sparks.svg?branch=develop)](https://travis-ci.org/sparkspay/sparks/branches)
 
-http://sparkscoin.io/
+https://www.sparks.org
 
 
 What is Sparks?
 ----------------
 
-Sparks (SPK) is an innovative cryptocurrency. A form of digital currency secured by cryptography and issued through a decentralized and advanced mining market. Based on Dash, it's an enhanced and further developed version, featuring the masternode technology with 50% Reward, near-instant and secure payments as well as anonymous transactions. Sparks has great potential for rapid growth and expansion. Based on a total Proof of Work and Masternode system, it is accesible to everyone, it ensures a fair and stable return of investment for the Graphics Processing Units (GPUs) miners and the Masternode holders.
+Sparks is an experimental new digital currency that enables anonymous, instant
+payments to anyone, anywhere in the world. Sparks uses peer-to-peer technology
+to operate with no central authority: managing transactions and issuing money
+are carried out collectively by the network. Sparks Core is the name of the open
+source software which enables the use of this currency.
 
+For more information, as well as an immediately useable, binary version of
+the Sparks Core software, see https://www.sparks.org/get-sparks/.
 
 
 License
@@ -25,7 +29,7 @@ Development Process
 -------------------
 
 The `master` branch is meant to be stable. Development is normally done in separate branches.
-[Tags](https://github.com/SparksReborn/sparkspay/tags) are created to indicate new official,
+[Tags](https://github.com/sparkspay/sparks/tags) are created to indicate new official,
 stable release versions of Sparks Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -58,5 +62,16 @@ code. This is especially important for large or high-risk changes. It is useful
 to add a test plan to the pull request description if testing the changes is
 not straightforward.
 
-# Sparks
+Translations
+------------
 
+Changes to translations as well as new translations can be submitted to
+[Sparks Core's Transifex page](https://www.transifex.com/projects/p/sparks/).
+
+Translations are periodically pulled from Transifex and merged into the git repository. See the
+[translation process](doc/translation_process.md) for details on how this works.
+
+**Important**: We do not accept translation changes as GitHub pull requests because the next
+pull from Transifex would automatically overwrite them again.
+
+Translators should also follow the [forum](https://www.sparks.org/forum/topic/sparks-worldwide-collaboration.88/).

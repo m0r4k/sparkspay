@@ -37,8 +37,8 @@ class BitcoinRPC:
 	def execute(self, obj):
 		try:
 			self.conn.request('POST', '/', json.dumps(obj),
-				{ 'Authorization' : self.authhdr,
-				  'Content-type' : 'application/json' })
+			{ 'Authorization' : self.authhdr,
+			  'Content-type' : 'application/json' })
 		except ConnectionRefusedError:
 			print('RPC connection refused. Check RPC settings and the server status.',
 			      file=sys.stderr)
@@ -125,11 +125,11 @@ if __name__ == '__main__':
 	if 'host' not in settings:
 		settings['host'] = '127.0.0.1'
 	if 'port' not in settings:
-		settings['port'] = 8899
+		settings['port'] = 8818
 	if 'min_height' not in settings:
 		settings['min_height'] = 0
 	if 'max_height' not in settings:
-		settings['max_height'] = 97000
+		settings['max_height'] = 101000
 	if 'rev_hash_bytes' not in settings:
 		settings['rev_hash_bytes'] = 'false'
 

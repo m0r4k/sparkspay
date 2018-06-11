@@ -4,11 +4,11 @@
 
 Sparks Core version 0.12.0 is now available from:
 
-  https://Sparkscoin.io/downloads
+  https://sparkspay.io/downloads
 
 Please report bugs using the issue tracker at github:
 
-  https://github.com/Sparkscoin/Sparks/issues
+  https://github.com/sparkspay/sparks/issues
 
 
 How to Upgrade
@@ -17,7 +17,7 @@ How to Upgrade
 If you are running an older version, shut it down. Wait until it has completely
 shut down (which might take a few minutes for older versions), then run the
 installer (on Windows) or just copy over /Applications/Sparks-Qt (on Mac) or
-Sparksd/Sparks-qt (on Linux).
+sparksd/sparks-qt (on Linux).
 
 **This new version uses transaction indexing by default, you will need to reindex 
 the blockchain. To do so, start the client with --reindex.**
@@ -100,4 +100,4 @@ AlexMomo
 snogcel
 bertlebbert
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/Sparks/).
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/sparks/).

@@ -71,11 +71,11 @@ background-color:#F8F6F6;
 
 QLabel { /* Base Text Size & Color */
 font-size:12px;
-color:#BBBBBB;
+color:#333333;
 }
 
 .QCheckBox { /* Checkbox Labels */
-color:#BBBBBB;
+color:#333333;
 background-color:transparent;
 }
 
@@ -114,7 +114,6 @@ padding-left:25px;
 padding-right:25px;
 padding-top:5px;
 padding-bottom:5px;
-margin-right: 10px;
 }
 
 QPushButton:hover {
@@ -143,7 +142,7 @@ background:#f2f2f2;
 }
 
 QComboBox:editable {
-background: #B12626;
+background: #FE5555;
 color:#616161;
 border:0px solid transparent;
 }
@@ -700,7 +699,7 @@ min-width:180px;
 }
 
 QDialog#RPCConsole QWidget#tab_peers  QLabel#peerHeading { /* Peers Info Header */
-color:#B12626;
+color:#FE5555;
 }
 
 QDialog#RPCConsole QPushButton#openDebugLogfileButton {
@@ -785,14 +784,13 @@ QWidget .QFrame#frame .QLabel#label_5 { /* Wallet Label */
 qproperty-alignment: 'AlignVCenter | AlignRight';
 min-width:160px;
 background-color:transparent;
-color:#fff;
+color:#f4f4f5;
 margin-right:5px;
 padding-right:5px;
 }
 
 QWidget .QFrame#frame .QLabel#labelWalletStatus { /* Wallet Sync Status */
 qproperty-alignment: 'AlignVCenter | AlignLeft';
-color:#fff;
 margin-left:3px;
 }
 
@@ -811,7 +809,7 @@ margin-left:16px;
 QWidget .QFrame#frame .QLabel#labelBalanceText { /* Available Balance Label */
 qproperty-alignment: 'AlignVCenter | AlignRight';
 min-width:160px;
-background-color:#B12626;
+background-color:#FE5555;
 color:#ffffff;
 margin-right:5px;
 padding-right:5px;
@@ -823,7 +821,7 @@ min-height:35px;
 QWidget .QFrame#frame .QLabel#labelBalance { /* Available Balance */
 qproperty-alignment: 'AlignVCenter | AlignLeft';
 font-size:16px;
-color:#fff;
+color:#FE5555;
 margin-left:0px;
     font-weight: bold;
 }
@@ -847,14 +845,12 @@ QWidget .QFrame#frame .QLabel#labelUnconfirmed { /* Pending Balance */
 qproperty-alignment: 'AlignVCenter | AlignLeft';
 font-size:12px;
 margin-left:0px;
-color:#fff;
 }
 
 QWidget .QFrame#frame .QLabel#labelWatchPending { /* Watch-only Pending Balance */
 qproperty-alignment: 'AlignVCenter | AlignLeft';
 font-size:12px;
 margin-left:16px;
-color:#fff;
 }
 
 QWidget .QFrame#frame .QLabel#labelImmatureText { /* Immature Balance Label */
@@ -870,7 +866,6 @@ QWidget .QFrame#frame .QLabel#labelImmature { /* Immature Balance */
 qproperty-alignment: 'AlignVCenter | AlignLeft';
 font-size:12px;
 margin-left:0px;
-color:#fff;
 }
 
 QWidget .QFrame#frame .QLabel#labelWatchImmature { /* Watch-only Immature Balance */
@@ -892,7 +887,6 @@ QWidget .QFrame#frame .QLabel#labelTotal { /* Total Balance */
 qproperty-alignment: 'AlignVCenter | AlignLeft';
 font-size:12px;
 margin-left:0px;
-color:#fff;
 }
 
 QWidget .QFrame#frame .QLabel#labelWatchTotal { /* Watch-only Total Balance */
@@ -919,7 +913,7 @@ QWidget .QFrame#framePrivateSend .QLabel#labelPrivateSendHeader { /* PrivateSend
 qproperty-alignment: 'AlignVCenter | AlignCenter';
 max-width: 421px;
 min-width: 421px;
-background-color:#B12626;
+background-color:#FE5555;
 color:#fff;
 margin-right: 5px;
 padding-right: 5px;
@@ -944,7 +938,6 @@ QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget > .QLabel {
 min-width:175px;
 font-weight:normal;
 min-height:25px;
-color:#ffffff;
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QLabel#labelPrivateSendEnabledText { /* PrivateSend Enabled Status Label */
@@ -953,11 +946,10 @@ min-width:160px;
 background-color:#F8F6F6;
 margin-right:5px;
 padding-right:5px;
-color:#ffffff;
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QLabel#labelPrivateSendEnabled { /* PrivateSend Enabled Status */
-color:#ffffff;
+
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QLabel#labelCompletitionText { /* PrivateSend Completion Label */
@@ -966,7 +958,7 @@ min-width:160px;
 background-color:#F8F6F6;
 margin-right:5px;
 padding-right:5px;
-color: #ffffff;
+
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QProgressBar#privateSendProgress { /* PrivateSend Completion */
@@ -978,7 +970,7 @@ color:#818181;
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QProgressBar#privateSendProgress::chunk {
-background-color: #B12626;
+background-color: #FE5555;
 width:1px;
 }
 
@@ -991,7 +983,7 @@ padding-right:5px;
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QLabel#labelAnonymized { /* PrivateSend Balance */
-color:#fff;
+
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QLabel#labelAmountAndRoundsText { /* PrivateSend Amount and Rounds Label */
@@ -999,11 +991,11 @@ qproperty-alignment: 'AlignVCenter | AlignRight';
 min-width:160px;
 background-color:#F8F6F6;
 margin-right:5px;
-padding-right:5px;  
+padding-right:5px;
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QLabel#labelAmountRounds { /* PrivateSend Amount and Rounds */
-color:#fff;
+
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QLabel#labelSubmittedDenomText { /* PrivateSend Submitted Denom Label */
@@ -1012,11 +1004,10 @@ min-width:160px;
 background-color:#F8F6F6;
 margin-right:5px;
 padding-right:5px;
-color: #fff;
 }
 
 QWidget .QFrame#framePrivateSend #privateSendFormLayoutWidget .QLabel#labelSubmittedDenom { /* PrivateSend Submitted Denom */
-color:#fff;
+
 }
 
 QWidget .QFrame#framePrivateSend .QWidget#layoutWidgetLastMessageAndButtons {
@@ -1118,13 +1109,13 @@ min-width:410px;
 margin-right:20px;
 margin-left:0;
 margin-top:15px;
-/*background-image: url(':/images/light/Sparks_logo_horizontal');*/
-/*background-repeat:none;*/
+background-image: url(':/images/light/sparks_logo_horizontal');
+background-repeat:none;
 }
 
 QWidget .QFrame#frame_2 .QLabel#label_4 { /* Recent Transactions Label */
 min-width:180px;
-color:#fff;
+color:#999;
 margin-left:67px;
 margin-top:83px;
 margin-right:5px;
@@ -1149,6 +1140,34 @@ font-size:12px;
 max-width:369px;
 margin-top:12px;
 margin-left:0px; /* CSS Voodoo - set to -66px to hide default transaction icons */
+}
+
+/* MODAL OVERLAY */
+
+QWidget#bgWidget { /* The 'frame' overlaying the overview-page */
+    background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: .01 #f6f6f6, stop: .1 rgba(250, 250, 250, 128), stop: .95 rgba(250, 250, 250, 255), stop: 1 #ebebeb);
+    color:#616161;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+QWidget#bgWidget .QPushButton#warningIcon {
+width:64px;
+height:64px;
+padding:5px;
+background-color:transparent;
+}
+
+QWidget#contentWidget { /* The actual content with the text/buttons/etc... */
+border-image: url(':/images/light/drkblue_walletFrame_bg') 0 0 0 0 stretch stretch;
+border-top:0px solid #000;
+margin:0;
+padding-top:20px;
+padding-bottom: 20px;
+}
+
+QWidget#bgWidget .QPushButton#closeButton {
+
 }
 
 /* SEND DIALOG */

@@ -2,26 +2,26 @@
 
 # backward compatibility for existing gentoo layout 
 #
-if [ -d "/var/lib/Sparkscore/.Sparkscore" ]; then
-	BITCOIND_DEFAULT_DATADIR="/var/lib/Sparkscore/.Sparkscore"
+if [ -d "/var/lib/sparkscore/.sparkscore" ]; then
+	BITCOIND_DEFAULT_DATADIR="/var/lib/sparkscore/.sparkscore"
 else
-	BITCOIND_DEFAULT_DATADIR="/var/lib/Sparksd"
+	BITCOIND_DEFAULT_DATADIR="/var/lib/sparksd"
 fi
 
-BITCOIND_CONFIGFILE=${BITCOIND_CONFIGFILE:-/etc/Sparkscore/Sparks.conf}
-BITCOIND_PIDDIR=${BITCOIND_PIDDIR:-/var/run/Sparksd}
-BITCOIND_PIDFILE=${BITCOIND_PIDFILE:-${BITCOIND_PIDDIR}/Sparksd.pid}
+BITCOIND_CONFIGFILE=${BITCOIND_CONFIGFILE:-/etc/sparkscore/sparks.conf}
+BITCOIND_PIDDIR=${BITCOIND_PIDDIR:-/var/run/sparksd}
+BITCOIND_PIDFILE=${BITCOIND_PIDFILE:-${BITCOIND_PIDDIR}/sparksd.pid}
 BITCOIND_DATADIR=${BITCOIND_DATADIR:-${BITCOIND_DEFAULT_DATADIR}}
-BITCOIND_USER=${BITCOIND_USER:-${BITCOIN_USER:-Sparkscore}}
-BITCOIND_GROUP=${BITCOIND_GROUP:-Sparkscore}
-BITCOIND_BIN=${BITCOIND_BIN:-/usr/bin/Sparksd}
+BITCOIND_USER=${BITCOIND_USER:-${BITCOIN_USER:-sparkscore}}
+BITCOIND_GROUP=${BITCOIND_GROUP:-sparkscore}
+BITCOIND_BIN=${BITCOIND_BIN:-/usr/bin/sparksd}
 BITCOIND_NICE=${BITCOIND_NICE:-${NICELEVEL:-0}}
 BITCOIND_OPTS="${BITCOIND_OPTS:-${BITCOIN_OPTS}}"
 
 name="Sparks Core Daemon"
 description="Sparks cryptocurrency P2P network daemon"
 
-command="/usr/bin/Sparksd"
+command="/usr/bin/sparksd"
 command_args="-pid=\"${BITCOIND_PIDFILE}\" \
 		-conf=\"${BITCOIND_CONFIGFILE}\" \
 		-datadir=\"${BITCOIND_DATADIR}\" \
@@ -71,7 +71,7 @@ checkconfig()
 {
 	if ! grep -qs '^rpcpassword=' "${BITCOIND_CONFIGFILE}" ; then
 		eerror ""
-		eerror "ERROR: You must set a secure rpcpassword to run Sparksd."
+		eerror "ERROR: You must set a secure rpcpassword to run sparksd."
 		eerror "The setting must appear in ${BITCOIND_CONFIGFILE}"
 		eerror ""
 		eerror "This password is security critical to securing wallets "

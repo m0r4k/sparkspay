@@ -1,6 +1,6 @@
 [Protocol]
-exec=Sparks-qt '%u'
-protocol=Sparks
+exec=sparks-qt '%u'
+protocol=sparks
 input=none
 output=none
 helper=true

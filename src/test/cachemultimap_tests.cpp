@@ -1,9 +1,8 @@
-// Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2017-2018 The Sparks Core developers
+// Copyright (c) 2014-2017 The Sparks Core developers
 
 #include "cachemultimap.h"
 
-#include "test/test_Sparks.h"
+#include "test/test_sparks.h"
 
 #include <algorithm>
 #include <iostream>

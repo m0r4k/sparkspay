@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin Core developers
-// Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2017-2018 The Sparks Core developers
+// Copyright (c) 2014-2017 The Sparks Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,7 +16,6 @@
 #include <boost/assign/list_of.hpp>
 
 #include "chainparamsseeds.h"
-
 
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
@@ -40,7 +38,17 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
     return genesis;
 }
 
-
+/**
+ * Build the genesis block. Note that the output of its generation
+ * transaction cannot be spent since it did not originally exist in the
+ * database.
+ *
+ * CBlock(hash=00000ffd590b14, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=e0028e, nTime=1390095618, nBits=1e0ffff0, nNonce=28917698, vtx=1)
+ *   CTransaction(hash=e0028e, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+ *     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d01044c5957697265642030392f4a616e2f3230313420546865204772616e64204578706572696d656e7420476f6573204c6976653a204f76657273746f636b2e636f6d204973204e6f7720416363657074696e6720426974636f696e73)
+ *     CTxOut(nValue=50.00000000, scriptPubKey=0xA9037BAC7050C479B121CF)
+ *   vMerkleTree: e0028e
+ */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
     const char* pszTimestamp = "The Sparks Genesis 22.12.2017: Ok, lets go to the moon!";
@@ -64,17 +72,17 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-        consensus.nSubsidyHalvingInterval = 262800; // one year
+        consensus.nSubsidyHalvingInterval = 262800; // Note: actual number of blocks per calendar year with DGW v3 is ~200700 (for example 449750 - 249050)
         consensus.nMasternodePaymentsStartBlock = 1152; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 158000; // not used
-        consensus.nMasternodePaymentsIncreasePeriod = 576*30; // not used
+        consensus.nMasternodePaymentsIncreaseBlock = 158000; // actual historical value
+        consensus.nMasternodePaymentsIncreasePeriod = 576*30; // 17280 - actual historical value
         consensus.nInstantSendKeepLock = 24;
         consensus.nBudgetPaymentsStartBlock = 2100000000; // year 10000+
-        consensus.nBudgetPaymentsCycleBlocks = 16616;
+        consensus.nBudgetPaymentsCycleBlocks = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nBudgetPaymentsWindowBlocks = 100;
         consensus.nBudgetProposalEstablishingTime = 60*60*24;
-        consensus.nSuperblockStartBlock = 2100000000; // year 10000+
-        consensus.nSuperblockCycle = 16616;
+        consensus.nSuperblockStartBlock = 2100000000; // The block at which 12.1 goes live (end of final 12.0 budget cycle)
+        consensus.nSuperblockCycle = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
         consensus.nMasternodeMinimumConfirmations = 15;
@@ -88,6 +96,8 @@ public:
         consensus.nPowTargetSpacing = 2 * 60; // Sparks: 120 seconds
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
+        consensus.nPowKGWHeight = 15200; // KGW > DGW, no KGW
+        consensus.nPowDGWHeight = 700;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -99,6 +109,19 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1502280000; // Aug 9th, 2017
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1533816000; // Aug 9th, 2018
 
+        // Deployment of DIP0001
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = 1528502400; // June 9th, 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nTimeout = 1560556800; // June 15th, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nWindowSize = 1000;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 600;
+
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000dd1c0423e5cce0");//115000
+
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0x000000000c77a0d520021ae7e706b706d257b6ff63b8d2818269a6a0ff926f25"); //115000
+
         //Sparks stuff
         consensus.nSPKHeight = 100000;
         consensus.nSPKPremine = 650000;
@@ -107,7 +130,10 @@ public:
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 21600;
         consensus.strCoreAddress = "GcwzZzkUnJdbSdexjvSLwdJRg3JXvZGjea";
-        consensus.strPostmineAddress = "GaTuX71DJM5MiJ4QJN3Q9Mhp84ZN6DhNvR";
+        consensus.fSPKRatioMN = 0.7;
+        consensus.vBannedAddresses.push_back("GRFBCEuMcfi9PhFVfcVutL7bGwj4KdPyWX");
+        consensus.vBannedAddresses.push_back("GPawkMiQm4qmYcz6mnM8ad3BxgsdgHjh52");
+        consensus.vBannedAddresses.push_back("GSR6AY8GCW8KUf7N5FGz4xxdZpZ3sWkfrR");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -118,9 +144,10 @@ public:
         pchMessageStart[1] = 0xb2;
         pchMessageStart[2] = 0xc3;
         pchMessageStart[3] = 0xd4;
-        vAlertPubKey = ParseHex("048921904b04531ad4ad5127d34f1a1a88c605537a04ad046fd339b0d75b7c4764ed6221df09901fa75e9905265b2b05e9d42b10995aac3fff9d2e6b32c729dcbf");
+        vAlertPubKey = ParseHex("0343783664fe0a0f884ceff5fe128e674d8c050cfd5bd66d262a7d4e1a546e30c3");
         nDefaultPort = 8890;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
+        nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 100000;
 
         genesis = CreateGenesisBlock(1513902562, 682979, 0x1e0ffff0, 1, 50 * COIN);
@@ -144,7 +171,7 @@ public:
         // Sparks BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x88)(0xAD)(0xE4).convert_to_container<std::vector<unsigned char> >();
         // Sparks BIP44 coin type is '5'
-        base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0x05).convert_to_container<std::vector<unsigned char> >();
+        nExtCoinType = 5;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
@@ -156,8 +183,8 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
-        strSporkPubKey = "0415c266a2a3998294b9c0a8e76fee8e1e2dfd951126ea96fb33a9c5011647bfc6a2bfa075e27ab56eeb752bbf13d42ca3dd0d406ef2edb49a98f99130b94a1ddf";
-        strMasternodePaymentsPubKey = "0415c266a2a3998294b9c0a8e76fee8e1e2dfd951126ea96fb33a9c5011647bfc6a2bfa075e27ab56eeb752bbf13d42ca3dd0d406ef2edb49a98f99130b94a1ddf";
+
+        strSporkPubKey = "03053174848a69d72c1ec8b59da80e912827745d8c0d8946f314203a7ade9c037e";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
@@ -180,11 +207,15 @@ public:
 	        (  70000, uint256S("0x000000001a835ae450f5fc24dcfbb9a73727eb360055db2e6f004875e9e283ac"))
 	        (  75000, uint256S("0x000000000f7699c372bc333ccfe77e6e4c1dba455534f1683f87afa77f718662"))
 	        (  80000, uint256S("0x00000000382cac8c592da673d1cb3eece9747a725dc8d40420ec8c54d70353ca"))
-	        (  85000, uint256S("0x00000000172eb33e1d197a00cc470dc823c64ff35ad9d28446858084fcf7acb2"))
-	        (  90000, uint256S("0x0000000013a3c3b48c07adddcccf3c81dc07e47357cec312434bff9426ceb606"))
-	        (  95000, uint256S("0x000000000bdf998343263166fa2d862f671c96161433630e1bc2d911e01e646e")),
-	        1526049903, // * UNIX timestamp of last checkpoint block
-            129491,    // * total number of transactions between genesis and last checkpoint
+            (  85000, uint256S("0x00000000172eb33e1d197a00cc470dc823c64ff35ad9d28446858084fcf7acb2"))
+            (  90000, uint256S("0x0000000013a3c3b48c07adddcccf3c81dc07e47357cec312434bff9426ceb606"))
+            (  95000, uint256S("0x000000000bdf998343263166fa2d862f671c96161433630e1bc2d911e01e646e"))
+            ( 100000, uint256S("0x0000000006fbc78ab84d3ddf4246d128b36c5240060cfc5ce9bb989a775bf970"))
+            ( 105000, uint256S("0x00000000083d9c4a12584c77b4a71fe4dcbd3545974971b34f83bca1e1af9d6b"))
+            ( 110000, uint256S("0x00000000123d606ceb21089d7564913ac9e1ac012dc411a5de2e26b5288d4ae6"))
+            ( 115000, uint256S("0x000000000c77a0d520021ae7e706b706d257b6ff63b8d2818269a6a0ff926f25")),
+            1528578608, // * UNIX timestamp of last checkpoint block
+            158933,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2800        // * estimated number of transactions per day after checkpoint
         };
@@ -219,10 +250,12 @@ public:
         consensus.BIP34Height = 21111; // FIX
         consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8"); // FIX
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
-        consensus.nPowTargetTimespan = 5 * 60; // Sparks test: 5 minutes, 10 blocks
-        consensus.nPowTargetSpacing = 3 * 60; // Sparks test: 3 minutes
+        consensus.nPowTargetTimespan = 5 * 60; // Sparks: 5 minutes, 10 blocks
+        consensus.nPowTargetSpacing = 0.5 * 60; // Sparks: 30 seconds
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
+        consensus.nPowKGWHeight = 4001; // nPowKGWHeight >= nPowDGWHeight means "no KGW"
+        consensus.nPowDGWHeight = 650;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -234,23 +267,37 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1502280000; // Aug 9th, 2017
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1533816000; // Aug 9th, 2018
 
+        // Deployment of DIP0001
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = 1528502400; // June 9th, 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nTimeout = 1560556800; // June 15th, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nWindowSize = 9;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nThreshold = 7; // 7/9 MNs
+
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000ce0010a");
+
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0x00000b625d0b8e0c182b38bc94427b874a1c9001d78c330bf34bb07044cbe934");
+
         //Sparks stuff
-        consensus.nSPKHeight = 3;
+        consensus.nSPKHeight = 100;
         consensus.nSPKPremine = 650000;
         consensus.nSPKPostmine = 300000;
         consensus.nSPKSubsidyLegacy = 18;
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 1;
-        consensus.strCoreAddress = "944ZZRFxKxoUdqvEaFQqukPzGFzPwdamFz";
-        consensus.strPostmineAddress = "98yMNBEHFoxvUGDQhc25yLh4AwBpqarA18";
+        consensus.strCoreAddress = "n7ntRMZ83MKzu9Krwp9W5rKGeTBRyVrVjc";
+        consensus.fSPKRatioMN = 0.7;
 
         pchMessageStart[0] = 0xd1;
         pchMessageStart[1] = 0x2b;
         pchMessageStart[2] = 0xb3;
         pchMessageStart[3] = 0x7a;
-        vAlertPubKey = ParseHex("04b92daeadd3341d4cf8b0ff0b6d1651dc9b090f51a99cb3cfb361bf167118fea1697587c92ca28f237c79ef680383d70f8f2a344741235fb5e5874774b98a2575");
+        vAlertPubKey = ParseHex("0244a0f8bd00f5497419d38623be157d80d42a83f7ed95b36387461515276b31bd");
         nDefaultPort = 8891;
         nMaxTipAge = 0x7fffffff; // allow mining on top of old blocks for testnet
+        nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1513902563, 109775, 0x1e0ffff0, 1, 50 * COIN);
@@ -260,9 +307,8 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("pool.sparkspay.io",  "pool.sparkspay.io"));
-        //vSeeds.push_back(CDNSSeedData("test2.sparkspay.io",  "test2.sparkspay.io"));
-        
+        vSeeds.push_back(CDNSSeedData("test1.sparkspay.io",  "test1.sparkspay.io"));
+
         // Testnet Sparks addresses start with 'n'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,112);
         // Testnet Sparks script addresses start with '9'
@@ -273,8 +319,9 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
         // Testnet Sparks BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
+
         // Testnet Sparks BIP44 coin type is '1' (All coin's testnet default)
-        base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0x01).convert_to_container<std::vector<unsigned char> >();
+        nExtCoinType = 1;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
 
@@ -286,8 +333,7 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
-        strSporkPubKey = "04e9afe808e9248dc438366c3427e2770c999d3c2e87a68b15f03dfe440e6939293c3cbc72aa6232a279fbc3c4c3570337ccb0f81fc087efcf5dec5b01dedfecae";
-        strMasternodePaymentsPubKey = "04e9afe808e9248dc438366c3427e2770c999d3c2e87a68b15f03dfe440e6939293c3cbc72aa6232a279fbc3c4c3570337ccb0f81fc087efcf5dec5b01dedfecae";
+        strSporkPubKey = "03556beefd702162910a0b765cb4f0635cf6b8754645e8e900221aa72d7ca9027f";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
@@ -333,6 +379,8 @@ public:
         consensus.nPowTargetSpacing = 2 * 60; // Sparks: 150 seconds
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
+        consensus.nPowKGWHeight = 15200; // same as mainnet
+        consensus.nPowDGWHeight = 700; // same as mainnet
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
         consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -341,6 +389,15 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 999999999999ULL;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0001].nTimeout = 999999999999ULL;
+
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x00");
+
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0x00");
 
         //Sparks stuff
         consensus.nSPKHeight = 100;
@@ -350,14 +407,15 @@ public:
         consensus.nSPKSubidyReborn = 20;
         consensus.nSPKBlocksPerMonth = 1;
         consensus.strCoreAddress = "944ZZRFxKxoUdqvEaFQqukPzGFzPwdamFz";
-        consensus.strPostmineAddress = "98yMNBEHFoxvUGDQhc25yLh4AwBpqarA18";
 
         pchMessageStart[0] = 0xa1;
         pchMessageStart[1] = 0xb3;
         pchMessageStart[2] = 0xd5;
         pchMessageStart[3] = 0x7b;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
+        nDelayGetHeadersTime = 0; // never delay GETHEADERS in regtests
         nDefaultPort = 18891;
+
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1513902564, 3483397, 0x1e0ffff0, 1, 50 * COIN);
@@ -393,8 +451,9 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
         // Regtest Sparks BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
+
         // Regtest Sparks BIP44 coin type is '1' (All coin's testnet default)
-        base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0x01).convert_to_container<std::vector<unsigned char> >();
+        nExtCoinType = 1;
    }
 };
 static CRegTestParams regTestParams;

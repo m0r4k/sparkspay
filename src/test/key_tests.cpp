@@ -9,7 +9,7 @@
 #include "uint256.h"
 #include "util.h"
 #include "utilstrencodings.h"
-#include "test/test_Sparks.h"
+#include "test/test_sparks.h"
 
 #include <string>
 #include <vector>

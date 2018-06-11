@@ -1,2 +1,2 @@
-usr/local/bin/Sparksd usr/bin
-usr/local/bin/Sparks-cli usr/bin
+usr/local/bin/sparksd usr/bin
+usr/local/bin/sparks-cli usr/bin

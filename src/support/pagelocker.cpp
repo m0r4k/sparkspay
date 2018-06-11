@@ -5,7 +5,7 @@
 #include "support/pagelocker.h"
 
 #if defined(HAVE_CONFIG_H)
-#include "config/Sparks-config.h"
+#include "config/sparks-config.h"
 #endif
 
 #ifdef WIN32
